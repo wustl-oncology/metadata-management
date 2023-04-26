@@ -15,6 +15,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "redis", "~> 4.0"
 gem "bootsnap", require: false
+gem 'octicons_helper'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

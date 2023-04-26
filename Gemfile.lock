@@ -144,6 +144,11 @@ GEM
       racc (~> 1.4)
     nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
+    octicons (18.3.0)
+    octicons_helper (18.3.0)
+      actionview
+      octicons (= 18.3.0)
+      railties
     parallel (1.23.0)
     parser (3.2.2.1)
       ast (~> 2.4.1)
@@ -282,6 +287,7 @@ DEPENDENCIES
   dockerfile-rails (>= 1.2)
   importmap-rails
   jbuilder
+  octicons_helper
   pg (~> 1.5)
   pry-byebug
   puma (~> 5.0)

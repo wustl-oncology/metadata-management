@@ -1,0 +1,39 @@
+<nav class="navbar is-dark">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <h1>Oncology Metadata</h1>
+    </a>
+  </div>
+
+
+  <div class="navbar-menu">
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <p class="control has-icons-right">
+          <input class="input" type="text" placeholder="Search">
+          <span class="icon is-small is-right">
+            <%= octicon "search", :height => 16, class: 'reduced-opacity' %>
+          </span>
+        </p>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Adam Coffman
+        </a>
+        <div class="navbar-dropdown is-right">
+          <a class="navbar-item">
+            Create Project
+          </a>
+          <a class="navbar-item">
+            Manage Tokens
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Sign Out
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</nav>
