@@ -14,6 +14,9 @@
  *= require_self
  */
 
+.is-fullheight {
+  min-height: 100vh;
+}
 
 .reduced-opacity {
   opacity: 0.5;
