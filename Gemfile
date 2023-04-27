@@ -26,6 +26,7 @@ group :development do
   gem "web-console"
   gem 'solargraph'
   gem 'solargraph-rails'
+  gem "dockerfile-rails", ">= 1.2"
 end
 
 group :test do
@@ -34,4 +35,3 @@ group :test do
   gem "webdrivers"
 end
 
-gem "dockerfile-rails", ">= 1.2", :group => :development
