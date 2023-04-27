@@ -16,6 +16,7 @@ gem "jbuilder"
 gem "redis", "~> 4.0"
 gem "bootsnap", require: false
 gem 'octicons_helper'
+gem 'kramdown'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
