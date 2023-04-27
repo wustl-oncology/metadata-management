@@ -67,12 +67,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
     t.text "individual", null: false
     t.text "timepoint"
     t.text "disease_status"
-    t.text "notes"
+    t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["disease_status"], name: "index_samples_on_disease_status"
     t.index ["individual"], name: "index_samples_on_individual"
     t.index ["name"], name: "index_samples_on_name"
+    t.index ["project_id"], name: "index_samples_on_project_id"
     t.index ["species"], name: "index_samples_on_species"
     t.index ["timepoint"], name: "index_samples_on_timepoint"
   end
@@ -123,5 +124,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
   add_foreign_key "pipeline_outputs", "projects"
   add_foreign_key "pipeline_outputs_sequencing_products", "pipeline_outputs", name: "fk_pipelineoutputs_bridge"
   add_foreign_key "pipeline_outputs_sequencing_products", "sequencing_products", name: "fk_sequenceproduct_bridge"
+  add_foreign_key "samples", "projects"
   add_foreign_key "sequencing_products", "samples"
 end

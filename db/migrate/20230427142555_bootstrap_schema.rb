@@ -13,7 +13,7 @@ class BootstrapSchema < ActiveRecord::Migration[7.0]
       t.text :individual, null: false, index: true 
       t.text :timepoint, null: true, index: true #can this be constrained?
       t.text :disease_status, null: true, index: true #can this be constrained?
-      t.text :notes, null: true
+      t.references :project, null: false, foreign_key: true
       t.timestamps
     end
 
