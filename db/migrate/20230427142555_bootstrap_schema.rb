@@ -32,8 +32,8 @@ class BootstrapSchema < ActiveRecord::Migration[7.0]
       t.references :project, null: false, index: true, foreign_key: true
       t.text :pipeline_name, null: false, index: true #workflow name in terra, model type in gms?
       t.text :pipeline_version, null: false, index: true #sha? tag? dockstore relese?
-      t.text :platorm, null: false, index: true #terra/gcp/compute1/etc
-      t.text :platform_identifier, null: false, index: true #cromwell wworkflow id, gms build id, etc
+      t.text :platform, null: false, index: true #terra/gcp/compute1/etc
+      t.text :platform_identifier, null: false, index: true #cromwell workflow id, gms build id, etc
       t.datetime :run_completed_at, null: true
       t.timestamps
     end

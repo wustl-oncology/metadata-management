@@ -29,15 +29,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
     t.bigint "project_id", null: false
     t.text "pipeline_name", null: false
     t.text "pipeline_version", null: false
-    t.text "platorm", null: false
+    t.text "platform", null: false
     t.text "platform_identifier", null: false
     t.datetime "run_completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pipeline_name"], name: "index_pipeline_outputs_on_pipeline_name"
     t.index ["pipeline_version"], name: "index_pipeline_outputs_on_pipeline_version"
+    t.index ["platform"], name: "index_pipeline_outputs_on_platform"
     t.index ["platform_identifier"], name: "index_pipeline_outputs_on_platform_identifier"
-    t.index ["platorm"], name: "index_pipeline_outputs_on_platorm"
     t.index ["project_id"], name: "index_pipeline_outputs_on_project_id"
     t.index ["run_id"], name: "index_pipeline_outputs_on_run_id"
   end

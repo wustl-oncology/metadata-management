@@ -11,17 +11,17 @@
 
   <body>
     <%= render 'shared/nav' %>
-      <div class="columns">
-        <div class="column is-narrow">
-          <%= render 'shared/sidebar' %>
-        </div>
-        <div class="column">
-          <section class="section">
-            <div class="">
-              <%= yield %>
-            </div>
-          </section>
-        </div>
+    <div class="columns">
+      <div class="column is-narrow">
+        <%= render 'shared/sidebar' %>
       </div>
+      <div class="column">
+        <section class="section">
+          <div class="">
+            <%= yield %>
+          </div>
+        </section>
+      </div>
+    </div>
   </body>
 </html>

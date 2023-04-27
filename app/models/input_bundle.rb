@@ -1,0 +1,2 @@
+class InputBundle < ApplicationRecord
+end
