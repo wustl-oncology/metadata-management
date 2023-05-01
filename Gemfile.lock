@@ -149,10 +149,11 @@ GEM
       actionview
       octicons (= 18.3.0)
       railties
+    pagy (6.0.3)
     parallel (1.23.0)
     parser (3.2.2.1)
       ast (~> 2.4.1)
-    pg (1.5.2)
+    pg (1.5.3)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -194,6 +195,10 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    ransack (4.0.0)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
     rbs (2.8.4)
     redis (4.8.1)
     regexp_parser (2.8.0)
@@ -274,7 +279,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.34)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   x86_64-darwin-22
@@ -289,10 +294,12 @@ DEPENDENCIES
   jbuilder
   kramdown
   octicons_helper
+  pagy
   pg (~> 1.5)
   pry-byebug
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)
+  ransack
   redis (~> 4.0)
   selenium-webdriver
   solargraph

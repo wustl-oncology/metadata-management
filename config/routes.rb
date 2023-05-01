@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   # root "articles#index"
   #
   root "dashboard#show"
+
+  resources :projects, except: [:destroy]
 end

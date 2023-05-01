@@ -17,6 +17,8 @@ gem "redis", "~> 4.0"
 gem "bootsnap", require: false
 gem 'octicons_helper'
 gem 'kramdown'
+gem 'pagy'
+gem 'ransack'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

@@ -21,3 +21,11 @@
 .reduced-opacity {
   opacity: 0.5;
 }
+
+.turbo-loading { 
+  visibility: hidden; 
+}
+
+turbo-frame[busy] .turbo-loading {
+  visibility: visible;
+}

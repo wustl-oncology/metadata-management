@@ -1,0 +1,48 @@
+<%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
+  <%= f.search_field :name_cont, placeholder: 'Name', class: 'input', data: { action: 'debounce#submit' }  %>
+  <%= f.search_field :lab_cont, placeholder: 'Lab', class: 'input', data: { action: 'debounce#submit' }  %>
+  <div class="select">
+    <%= f.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), { include_blank: true }, data: { action: "debounce#submit" } %>
+  </div>
+<% end %>
+
+<%= turbo_frame_tag 'table' do %>
+  <%= render 'shared/loader' %>
+  <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th><%= sort_link(@q, :name) %></th>
+        <th><%= sort_link(@q, :lab) %></th>
+        <th>Notes</th>
+        <th>Tags</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @projects.each do |project| %>
+        <%= tag.tr id: dom_id(project) do %>
+          <td>
+            <%= link_to project_path(project) do %>
+              <%= project.name %>
+            <% end %>
+          </td>
+          <td>
+            <%= project.lab %>
+          </td>
+          <td>
+            <%= octicon "note", :height => 24 %>
+          </td>
+          <td>
+            <div class="tags">
+              <% project.tags.each do |tag| %>
+                <span class="tag is-medium is-dark">
+                  <%= tag.tag %>
+                </span>
+              <% end %>
+            </div>
+          </td>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <%== pagy_bulma_nav(@pagy) %>
+<% end %>
