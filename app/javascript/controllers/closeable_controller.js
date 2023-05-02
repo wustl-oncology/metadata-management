@@ -8,17 +8,19 @@ export default class extends Controller {
   }
 
   close() {
-    console.log("TRIGGERED")
     if(this.hasExitClassValue) {
       this.element.classList.add(this.exitClassValue);
       this.element.addEventListener('animationend', () => {
-        this.element.parentElement.removeAttribute("src")
-        this.element.remove();
+        this.removeElement()
       });
     } else {
-      this.element.parentElement.removeAttribute("src")
-      this.element.remove();
+      this.removeElement()
     }
+  }
+
+  removeElement() {
+    this.element.parentElement.removeAttribute("src")
+    this.element.remove();
   }
 
   handleKeyup(e) {
