@@ -1,0 +1,28 @@
+<%# locals: (collection:) -%>
+
+<% collection.each do |project| %>
+  <%= tag.tr id: dom_id(project) do %>
+    <td>
+      <%= link_to project_path(project) do %>
+        <%= project.name %>
+      <% end %>
+    </td>
+    <td>
+      <%= project.lab %>
+    </td>
+    <td>
+      <%= link_to preview_note_path(subject: 'project', id: project.id), data: { turbo_frame: :modal } do %>
+        <%= octicon "note", :height => 24 %>
+      <% end %>
+    </td>
+    <td>
+      <div class="tags">
+        <% project.tags.each do |tag| %>
+          <span class="tag is-medium is-dark">
+            <%= tag.tag %>
+          </span>
+        <% end %>
+      </div>
+    </td>
+  <% end %>
+<% end %>

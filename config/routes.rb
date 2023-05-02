@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   root "dashboard#show"
 
   resources :projects, except: [:destroy]
+
+  get '/notes/:subject/:id' => 'notes#preview', as: :preview_note
 end

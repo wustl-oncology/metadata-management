@@ -1,0 +1,23 @@
+<%# locals: (title: ) -%>
+
+<%= turbo_frame_tag :modal do %>
+  <div data-controller="closeable" 
+       data-closeable-exit-class-value="animate-fade-out"
+       data-action="keyup@document->closeable#handleKeyup"
+       class="modal is-active animate-expand-in">
+
+    <div class="modal-background" data-action='click->closeable#close'></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"><%= title %></p>
+        <button class="delete" aria-label="close" data-action='closeable#close'></button>
+      </header>
+      <section class="modal-card-body">
+        <%= yield :modal_body %>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button" data-action='closeable#close'>Close</button>
+      </footer>
+    </div>
+  </div>
+<% end %> 

@@ -1,0 +1,25 @@
+<%# locals: (filter_partial:, header_partial:, body_partial:, selected_item_id:, collection:  ) -%>
+
+
+<%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
+  <div class="field is-grouped is-grouped-centered">
+    <%= render partial: filter_partial, locals: { form: f }  %>
+  </div>
+<% end %>
+
+<%= turbo_frame_tag 'table' do %>
+  <%= render 'shared/loader' %>
+  <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <%= render partial: header_partial, locals: { query: @q }  %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: body_partial, locals: { collection: collection } %>
+    </tbody>
+  </table>
+  <%== pagy_bulma_nav(@pagy) %>
+<% end %>
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: selected_item_id } %>

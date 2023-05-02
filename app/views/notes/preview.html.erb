@@ -1,0 +1,9 @@
+<%= content_for :modal_body do %>
+  <% if @note && @note.formatted_notes.present? %>
+    <%== @note.formatted_notes %>
+  <% else %>
+    No notes.
+  <% end %>
+<% end %>
+
+<%= render partial: 'shared/modal', locals: { title: 'Notes' } %>

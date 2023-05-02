@@ -8,6 +8,21 @@
              slide-out 0.25s ease-out;
 }
 
+.animate-expand-in {
+  animation: fade-in 0.1s ease-out,
+             zoom-in 0.1s ease-out;
+             
+}
+
+.animate-fade-out {
+  animation: fade-out 0.1s ease-out;
+}
+
+@keyframes zoom-in {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
