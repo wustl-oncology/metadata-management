@@ -1,4 +1,4 @@
-<%= search_form_for @q, html: { data: { controller: 'debounce clearable', turbo_frame: 'table' } } do |f| %>
+<%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
   <div class="field is-grouped is-grouped-centered">
     <div class="control is-expanded">
       <%= f.search_field :name_cont, placeholder: 'Name', class: 'input', data: { action: 'debounce#submit' }  %>
@@ -52,3 +52,5 @@
   </table>
   <%== pagy_bulma_nav(@pagy) %>
 <% end %>
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'projects-menu-item' } %>
