@@ -29,3 +29,8 @@
 turbo-frame[busy] .turbo-loading {
   visibility: visible;
 }
+
+.notes-display {
+  border-radius: 6px;
+  border: 1px solid  hsl(0, 0%, 71%);
+}

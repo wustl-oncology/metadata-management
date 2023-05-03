@@ -18,9 +18,9 @@
       </div>
       <div class="column animate-slide-in">
         <section class="section">
-          <div class="">
+          <%= turbo_frame_tag :main_content do %>
             <%= yield %>
-          </div>
+          <% end %>
         </section>
       </div>
     </div>

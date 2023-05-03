@@ -3,7 +3,8 @@ class Project < ApplicationRecord
   include WithNote
   has_many :samples
 
-  validates_uniqueness_of :name
+  validates :name, uniqueness: { message: 'must be unique' }
+  validates :lab, :name, presence: { message: 'is required' }
 
   def self.ransackable_attributes(auth_object = nil)
     ["name", "lab", "tags", "created_at", "updated_at"]

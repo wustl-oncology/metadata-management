@@ -3,7 +3,7 @@
 <% collection.each do |project| %>
   <%= tag.tr id: dom_id(project) do %>
     <td>
-      <%= link_to project_path(project) do %>
+      <%= link_to project_path(project), data: { turbo_frame: '_top' } do %>
         <%= project.name %>
       <% end %>
     </td>
@@ -16,13 +16,7 @@
       <% end %>
     </td>
     <td>
-      <div class="tags">
-        <% project.tags.each do |tag| %>
-          <span class="tag is-medium is-dark">
-            <%= tag.tag %>
-          </span>
-        <% end %>
-      </div>
+      <%= render partial: 'tags/tag_list', locals: { tags: project.tags } %>
     </td>
   <% end %>
 <% end %>

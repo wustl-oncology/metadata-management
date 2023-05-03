@@ -1,0 +1,100 @@
+<%= turbo_frame_tag :project do  %>
+  <div class="card block">
+    <header class="card-header">
+      <div class="card-header-title">
+        <span class="mr-3"><%= @project.name %></span>
+
+        <%= render partial: 'tags/tag_list', locals: { tags: @project.tags } %>
+      </div>
+      <div class="card-header-icon">
+        <span class="mr-3 is-size-6 has-text-grey">
+          <strong>Lab:</strong> <%= @project.lab %>
+        </span>
+        <span class="icon mr-3">
+          <%= link_to edit_project_path(@project) do %>
+            <%= octicon "upload", :height => 24 %>
+          <% end %>
+        </span>
+        <span class="icon">
+          <%= link_to edit_project_path(@project) do %>
+            <%= octicon "pencil", :height => 24 %>
+          <% end %>
+        </span>
+      </div>
+    </header>
+
+    <div class="card-content">
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Samples</p>
+            <p class="title"><%= @project.samples.count %></p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Sequence Objects</p>
+            <p class="title"><%= SequencingProduct.where(sample_id: @project.sample_ids).count %></p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Pipeline Outputs</p>
+            <p class="title"><%= PipelineOutput.where(project: @project).count %></p>
+          </div>
+        </div>
+      </nav>
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <strong>Notes:</strong>
+            <div class="has-background-white-bis notes-display">
+              <div class="p-4">
+                <%== @project.formatted_notes %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+<% end %>
+
+
+<div class="card block">
+  <%= turbo_frame_tag :browse_view do %>
+    <div class="tabs is-toggle is-fullwidth is-medium">
+      <li class="is-active"><a>Samples</a></li>
+      <li><a>Sequence Objects</a></li>
+      <li><a>Pipeline Outputs</a></li>
+    </div>
+    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Species</th>
+          <th>Tissue</th>
+          <th>Individual</th>
+          <th>Timepoint</th>
+          <th>Disease Status</th>
+          <th>Tags</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% (1..25).each do %>
+          <tr>
+            <td>SID-231123</td>
+            <td>Human</td>
+            <td>Some Tissue</td>
+            <td>ID-2312</td>
+            <td>third</td>
+            <td>tumor</td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'projects-menu-item' } %>
