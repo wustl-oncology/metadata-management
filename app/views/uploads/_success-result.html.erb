@@ -1,0 +1,8 @@
+<%# locals: (project:) -%>
+<div class="notification is-primary is-light">
+  <h3>Success</h3>
+  <%= link_to project_path(project), class: 'button is-small', data: {turbo_action: 'advance', turbo_frame: '_top'} do %>
+    Click Here
+  <% end %>
+   to view your Project
+</div>

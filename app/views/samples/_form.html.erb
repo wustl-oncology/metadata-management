@@ -1,0 +1,42 @@
+<%= form_with model: @project, class: "box" do |form| %>
+  <% if @project.errors.any? %>
+    <div class="notification is-danger is-light">
+      There was an issue submitting this form, please correct any errors and try again.
+    </div>
+  <% end %>
+  <div class="field">
+    <%= form.label :name, 'Project Name', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :name, class: class_names('input', input_error_class(@project, :name)) %>
+    </div>
+    <%= error_message(@project, :name) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lab, 'Lab', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :lab, class: class_names('input', input_error_class(@project, :lab)) %>
+    </div>
+    <%= error_message(@project, :lab) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes, 'Notes', class: 'label' %>
+    <div class="control">
+      <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@project, :notes)) %>
+    </div>
+    <%= error_message(@project, :notes) %>
+  </div>
+
+  <div class="field ">
+    <% if @project.persisted? %>
+      <%= link_to "Cancel", project_path(@project), class: "button", data: { turbo_action: 'advance' } %>
+    <% else %>
+      <%= link_to "Cancel", projects_path, class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+    <% end %>
+    <%= form.submit 'Submit', class: "button is-primary" %>
+  </div>
+
+<% end %>
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'projects-menu-item' } %>

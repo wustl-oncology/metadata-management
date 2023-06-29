@@ -10,16 +10,14 @@
         <span class="mr-3 is-size-6 has-text-grey">
           <strong>Lab:</strong> <%= @project.lab %>
         </span>
-        <span class="icon mr-3">
-          <%= link_to edit_project_path(@project) do %>
-            <%= octicon "upload", :height => 24 %>
-          <% end %>
-        </span>
-        <span class="icon">
-          <%= link_to edit_project_path(@project) do %>
-            <%= octicon "pencil", :height => 24 %>
-          <% end %>
-        </span>
+        <%= link_to new_project_upload_path(@project), class: 'button is-small mr-3', data: { turbo_action: 'advance', turbo_frame: '_top' } do %>
+          <span class="icon is-small"><%= octicon "upload", :height => 24 %></span>
+          <span>Import Data</span>
+        <% end %>
+        <%= link_to edit_project_path(@project), class: 'button is-small' do %>
+          <span class="icon is-small"><%= octicon "pencil", :height => 24 %></span>
+          <span>Edit Project</span>
+        <% end %>
       </div>
     </header>
 
@@ -28,7 +26,7 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Samples</p>
-            <p class="title"><%= @project.samples.count %></p>
+            <p class="title"><%= @project.samples.distinct.count %></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
@@ -63,37 +61,7 @@
 
 <div class="card block">
   <%= turbo_frame_tag :browse_view do %>
-    <div class="tabs is-toggle is-fullwidth is-medium">
-      <li class="is-active"><a>Samples</a></li>
-      <li><a>Sequence Objects</a></li>
-      <li><a>Pipeline Outputs</a></li>
-    </div>
-    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Species</th>
-          <th>Tissue</th>
-          <th>Individual</th>
-          <th>Timepoint</th>
-          <th>Disease Status</th>
-          <th>Tags</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% (1..25).each do %>
-          <tr>
-            <td>SID-231123</td>
-            <td>Human</td>
-            <td>Some Tissue</td>
-            <td>ID-2312</td>
-            <td>third</td>
-            <td>tumor</td>
-            <td></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%= render partial: @table_name %>
   <% end %>
 </div>
 

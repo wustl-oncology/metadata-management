@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  include RansackQueries
+
   before_action :set_project, only: [:show, :edit, :update]
 
   def index
@@ -13,6 +15,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    setup_table_queries
   end
 
   def edit
@@ -47,5 +50,15 @@ class ProjectsController < ApplicationController
 
   def set_project
     @project = Project.includes(:tags).find(params[:id])
+  end
+
+  def setup_table_queries
+    @table_name = if params[:display] == 'sequencing_products'
+                    ransack_sequence_products(project_id: @project.id)
+                    'projects/project_sequencing_products'
+                  else
+                    ransack_samples(project_id: @project.id)
+                    'projects/project_samples'
+                  end
   end
 end

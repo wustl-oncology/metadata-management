@@ -1,0 +1,22 @@
+<%# locals: (errors:, project:) -%>
+<div class="notification is-danger is-light">
+  <h3>Error</h3>
+  <div class="content">
+      <% errors.each do |(error_type, errors)| %>
+        <% next if errors.none? %>
+        <p><strong><%= error_type.to_s.humanize %></strong></p>
+        <ul>
+          <% errors.each do |error| %>
+            <li>
+              <%= error %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+  </div>
+  After you have corrected these issues, you can
+  <%= link_to new_project_upload_path(project), class: 'button is-small', data: {turbo_action: 'advance', turbo_frame: '_top'} do %>
+    Click Here
+  <% end %>
+   to try again.
+</div>

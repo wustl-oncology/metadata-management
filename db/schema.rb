@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_14_222816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "input_bundles", force: :cascade do |t|
     t.text "name", null: false
@@ -61,19 +89,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
     t.index ["name"], name: "index_projects_on_name"
   end
 
+  create_table "projects_samples", id: false, force: :cascade do |t|
+    t.bigint "sample_id", null: false
+    t.bigint "project_id", null: false
+  end
+
   create_table "samples", force: :cascade do |t|
     t.text "name", null: false
     t.text "species", null: false
     t.text "individual", null: false
     t.text "timepoint"
     t.text "disease_status"
-    t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["disease_status"], name: "index_samples_on_disease_status"
     t.index ["individual"], name: "index_samples_on_individual"
     t.index ["name"], name: "index_samples_on_name"
-    t.index ["project_id"], name: "index_samples_on_project_id"
     t.index ["species"], name: "index_samples_on_species"
     t.index ["timepoint"], name: "index_samples_on_timepoint"
   end
@@ -81,16 +112,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
   create_table "sequencing_products", force: :cascade do |t|
     t.bigint "sample_id", null: false
     t.text "instrument", null: false
-    t.text "timepoint"
     t.text "flow_cell_id"
     t.text "unaligned_data_path", null: false
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "library_prep"
     t.index ["flow_cell_id"], name: "index_sequencing_products_on_flow_cell_id"
     t.index ["instrument"], name: "index_sequencing_products_on_instrument"
     t.index ["sample_id"], name: "index_sequencing_products_on_sample_id"
-    t.index ["timepoint"], name: "index_sequencing_products_on_timepoint"
     t.index ["unaligned_data_path"], name: "index_sequencing_products_on_unaligned_data_path"
   end
 
@@ -112,6 +142,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
     t.index ["tag"], name: "index_tags_on_tag"
   end
 
+  create_table "uploads", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_uploads_on_project_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.text "email", null: false
     t.text "name", null: false
@@ -121,9 +158,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_27_142555) do
     t.index ["name"], name: "index_users_on_name"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "pipeline_outputs", "projects"
   add_foreign_key "pipeline_outputs_sequencing_products", "pipeline_outputs", name: "fk_pipelineoutputs_bridge"
   add_foreign_key "pipeline_outputs_sequencing_products", "sequencing_products", name: "fk_sequenceproduct_bridge"
-  add_foreign_key "samples", "projects"
   add_foreign_key "sequencing_products", "samples"
 end

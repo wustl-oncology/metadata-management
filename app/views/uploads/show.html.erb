@@ -1,0 +1,18 @@
+<%= turbo_frame_tag :main_content do %>
+  <%= turbo_stream_from @upload %>
+  <h1 class="title is-3">Upload Sample Information</h1>
+  <h2 class="subtitle"><%= @project.name %></h3>
+  <div class="animate-slide-in content">
+    <section id="import-result" class="section">
+      <h3 class="title">
+        Importing Samples
+      </h3>
+      <progress id="import-progress" class="progress is-primary" max="100">15%</progress>
+      <h4 class="subtitle" id="current-step">
+        Validating File...
+      </h4>
+      <ul id="step-list" style="list-style: none;">
+      </ul>
+    </section>
+  </div>
+<% end %>

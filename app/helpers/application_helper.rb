@@ -16,4 +16,12 @@ module ApplicationHelper
       nil
     end
   end
+
+  def icon_for_status(status)
+    if status == :success
+      'check-circle'
+    else
+      'circle-slash'
+    end
+  end
 end

@@ -1,0 +1,29 @@
+<%# locals: (collection:) -%>
+
+<% collection.each do |sp| %>
+  <%= tag.tr id: dom_id(sp) do %>
+    <td>
+      <%= sp.sample.name %>
+    </td>
+    <td>
+      <%= sp.library_prep %>
+    </td>
+    <td>
+      <%= sp.flow_cell_id %>
+    </td>
+    <td>
+      <%= sp.instrument %>
+    </td>
+    <td>
+      <%= sp.unaligned_data_path %>
+    </td>
+    <td>
+      <%= link_to preview_note_path(subject: 'sequencing_product', id: sp.id), data: { turbo_frame: :modal } do %>
+        <%= octicon "note", :height => 24 %>
+      <% end %>
+    </td>
+    <td>
+      <%= render partial: 'tags/tag_list', locals: { tags: sp.tags } %>
+    </td>
+  <% end %>
+<% end %>

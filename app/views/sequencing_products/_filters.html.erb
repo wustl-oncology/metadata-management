@@ -1,0 +1,20 @@
+<%# locals: (form:) -%>
+<div class="control is-expanded">
+  <%= form.search_field :sample_name_cont, placeholder: 'Sample', class: 'input', data: { action: 'debounce#submit' }  %>
+</div>
+<div class="control">
+  <%= form.search_field :library_prep_cont, placeholder: 'Library Prep', class: 'input', data: { action: 'debounce#submit' }  %>
+</div>
+<div class="control">
+  <%= form.search_field :flow_cell_id_cont, placeholder: 'Flow Cell', class: 'input', data: { action: 'debounce#submit' }  %>
+</div>
+<div class="control">
+  <%= form.search_field :instrument_cont, placeholder: 'Instrument', class: 'input', data: { action: 'debounce#submit' }  %>
+</div>
+<div class="control">
+  <%= form.search_field :unaligned_data_path_cont, placeholder: 'Data Path', class: 'input', data: { action: 'debounce#submit' }  %>
+</div>
+<div class="select">
+  <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
+</div>
+
