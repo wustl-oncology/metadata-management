@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  root "dashboard#show"
 
   resources :projects, except: [:destroy] do
     resources :uploads, only: [:new, :create, :show]
@@ -10,8 +9,18 @@ Rails.application.routes.draw do
 
   resources :samples, only: [:index]
   resources :sequencing_products, only: [:index]
+  resources :pipeline_outputs, only: [:create]
 
   resources :notes, only: [:index]
+  resources :users, only: [:show]
+  post '/refresh_token' => 'users#refresh_token'
 
   get '/notes/:subject/:id' => 'notes#preview', as: :preview_note
+
+  get '/sign_in' =>"static#index"
+
+  get '/auth/:provider/callback' => 'sessions#create'
+  get '/sign_out' => 'sessions#destroy', as: :signout
+
+  root to: 'static#index'
 end

@@ -18,17 +18,17 @@
       </div>
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
-          Adam Coffman
+          <%= @current_user.name %>
         </a>
         <div class="navbar-dropdown is-right">
           <a href="<%= new_project_path %>" class="navbar-item">
             Create Project
           </a>
-          <a class="navbar-item">
-            Manage Tokens
-          </a>
+          <%= link_to user_path(@current_user), class: "navbar-item" do %>
+            Manage API Key
+          <% end %>
           <hr class="navbar-divider">
-          <a class="navbar-item">
+          <a href="/sign_out" class="navbar-item">
             Sign Out
           </a>
         </div>

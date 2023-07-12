@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MetadataManagement</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body>
+    <section class="section is-large">
+      <center>
+        <div class="block">
+          <% if flash[:notice]  %>
+            <article class="message is-warning">
+              <div class="message-body">
+                <%= flash[:notice] %>
+              </div>
+            </article>
+          <% end %>
+          <%= button_to '/auth/github', method: :post, class: "button is-rounded is-info is-large", data: { turbo: false } do %>
+            <span class="icon">
+              <%= octicon "mark-github", :height => 48 %>
+            </span>
+            <span>Sign in to the Metadata Management System with GitHub</span>
+          <% end %>
+        </div>
+      </center>
+    </section>
+  </body>
+</html>
+

@@ -1,0 +1,42 @@
+<div class="box">
+  <div class="field block">
+    <label class="label">Username</label>
+    <div class="control has-icons-left">
+      <input class="input is-rounded" type="text" value="<%= @user.name %>" disabled>
+      <span class="icon is-left">
+        <%= octicon "person-fill", height: 24, class: 'reduced-opacity' %>
+      </span>
+    </div>
+  </div>
+  <div class="field block">
+    <label class="label">Email</label>
+    <div class="control has-icons-left">
+      <input class="input is-rounded" type="text" value="<%= @user.email %>" disabled>
+      <span class="icon is-left">
+        <%= octicon "mail", height: 24, class: 'reduced-opacity' %>
+      </span>
+    </div>
+    <p class="help">These values come from GitHub</p>
+  </div>
+  <label class="label">API Key</label>
+  <div class="field is-grouped" data-controller="clipboard">
+    <div class="control is-expanded has-icons-left">
+      <input id='api-key-input' class="input is-rounded" type="text" value="<%= @user.api_key %>" disabled data-clipboard-target="source">
+      <span class="icon is-left">
+        <%= octicon "key", height: 24, class: 'reduced-opacity' %>
+      </span>
+    </div>
+    <div class="control">
+      <%= button_to '/refresh_token', method: :post, class: 'button is-rounded', title: 'Generate New Token', form: { data: { turbo_confirm: "This will invalidate your previous key. Continue?" } } do %>
+        <span class="icon mr-3"><%= octicon "sync", height: 24 %></span> 
+        <span>Generate New Key</span>
+      <% end %>
+    </div>
+    <div class="control">
+      <button class="button is-rounded" data-action="clipboard#copy">
+        <span class="icon mr-3"><%= octicon "copy", height: 24 %></span> 
+        <span data-clipboard-target="buttonText">Copy Key</span>
+      </button>
+    </div>
+  </div>
+</div>

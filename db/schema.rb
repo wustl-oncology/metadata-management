@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_14_222816) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_12_152233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,12 +62,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_14_222816) do
     t.datetime "run_completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["pipeline_name"], name: "index_pipeline_outputs_on_pipeline_name"
     t.index ["pipeline_version"], name: "index_pipeline_outputs_on_pipeline_version"
     t.index ["platform"], name: "index_pipeline_outputs_on_platform"
     t.index ["platform_identifier"], name: "index_pipeline_outputs_on_platform_identifier"
     t.index ["project_id"], name: "index_pipeline_outputs_on_project_id"
     t.index ["run_id"], name: "index_pipeline_outputs_on_run_id"
+    t.index ["user_id"], name: "index_pipeline_outputs_on_user_id"
   end
 
   create_table "pipeline_outputs_sequencing_products", force: :cascade do |t|
@@ -154,6 +156,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_14_222816) do
     t.text "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "github_uid", null: false
+    t.text "api_key", null: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["name"], name: "index_users_on_name"
   end

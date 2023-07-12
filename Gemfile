@@ -20,6 +20,9 @@ gem 'kramdown'
 gem 'pagy'
 gem 'ransack'
 
+gem "omniauth-rails_csrf_protection"
+gem 'omniauth-github', '~> 2.0.1'
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'pry-byebug'

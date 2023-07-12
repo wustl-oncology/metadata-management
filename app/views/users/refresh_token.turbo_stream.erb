@@ -1,0 +1,3 @@
+<%= turbo_stream.replace 'api-key-input' do %>
+  <input id='api-key-input' class="input" type="text" value="<%= @user.api_key %>" data-clipboard-target="source" disabled>
+<% end %>
