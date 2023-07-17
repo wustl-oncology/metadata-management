@@ -12,7 +12,12 @@ class PipelineOutputsController < ApplicationController
   end
 
   def create
-    head :ok
+    import_request = ImportPipelineOutputsRequest.new(request.request_parameters , current_user)
+    if import_request.valid? && import_request.import
+      head :created
+    else
+      render json: { errors: import_request.errors }, status: :bad_request
+    end
   end
 
   def show

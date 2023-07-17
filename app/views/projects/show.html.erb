@@ -10,6 +10,9 @@
         <span class="mr-3 is-size-6 has-text-grey">
           <strong>Lab:</strong> <%= @project.lab %>
         </span>
+        <span class="mr-3 is-size-6 has-text-grey">
+          <strong>Created By:</strong> <%= @project.user&.name %>
+        </span>
         <%= link_to new_project_upload_path(@project), class: 'button is-small mr-3', data: { turbo_action: 'advance', turbo_frame: '_top' } do %>
           <span class="icon is-small"><%= octicon "upload", :height => 24 %></span>
           <span>Import Data</span>

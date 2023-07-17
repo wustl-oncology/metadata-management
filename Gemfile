@@ -19,6 +19,7 @@ gem 'octicons_helper'
 gem 'kramdown'
 gem 'pagy'
 gem 'ransack'
+gem 'json-schema'
 
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-github', '~> 2.0.1'

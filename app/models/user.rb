@@ -9,6 +9,9 @@ class User < ApplicationRecord
 
   before_create :generate_api_key
 
+  has_many :projects
+  has_many :pipeline_outputs
+
 
   def self.ransackable_attributes(auth_object = nil)
     [:id, :created_at, :updated_at]

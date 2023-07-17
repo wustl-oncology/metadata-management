@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_12_152233) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_13_144731) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,7 +53,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_152233) do
   end
 
   create_table "pipeline_outputs", force: :cascade do |t|
-    t.text "run_id", null: false
     t.bigint "project_id", null: false
     t.text "pipeline_name", null: false
     t.text "pipeline_version", null: false
@@ -63,12 +62,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_152233) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.text "data_location", null: false
     t.index ["pipeline_name"], name: "index_pipeline_outputs_on_pipeline_name"
     t.index ["pipeline_version"], name: "index_pipeline_outputs_on_pipeline_version"
     t.index ["platform"], name: "index_pipeline_outputs_on_platform"
     t.index ["platform_identifier"], name: "index_pipeline_outputs_on_platform_identifier"
     t.index ["project_id"], name: "index_pipeline_outputs_on_project_id"
-    t.index ["run_id"], name: "index_pipeline_outputs_on_run_id"
     t.index ["user_id"], name: "index_pipeline_outputs_on_user_id"
   end
 
@@ -87,8 +86,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_152233) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["lab"], name: "index_projects_on_lab"
     t.index ["name"], name: "index_projects_on_name"
+    t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
   create_table "projects_samples", id: false, force: :cascade do |t|

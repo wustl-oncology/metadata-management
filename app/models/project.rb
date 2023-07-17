@@ -2,6 +2,7 @@ class Project < ApplicationRecord
   include Taggable
   include WithNote
   has_and_belongs_to_many :samples
+  belongs_to :user
 
   validates :name, uniqueness: { message: 'must be unique' }
   validates :lab, :name, presence: { message: 'is required' }

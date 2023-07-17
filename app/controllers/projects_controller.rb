@@ -26,7 +26,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_params)
+    @project = Project.new(project_params.merge({user: current_user}))
 
     if @project.save
       redirect_to @project
@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = Project.includes(:tags).find(params[:id])
+    @project = Project.includes(:tags, :user).find(params[:id])
   end
 
   def setup_table_queries
