@@ -7,11 +7,14 @@ class ImportPipelineOutputsRequest
     @request = request
     @user = user
     @errors = nil
+    @attrs = request.deep_transform_keys { |k| k.to_s.underscore }
   end
 
   def valid?
     if errors.nil?
-      validate
+      @errors = []
+      validate_json
+      validate_identifiers
     end
 
     if errors.any?
@@ -22,30 +25,55 @@ class ImportPipelineOutputsRequest
   end
 
   def import
-    #raise StandardError.new("Cannot import invalid data") unless valid?
-    #attrs = request.deep_transform_keys { |k| k.to_s.underscore }
-    #samples = attrs.delete('sample_names')
-    #ActiveRecord::Base.transaction do
-      #samples.each do |s|
-        #sp = SequencingProduct.find_by!(sample_id: s)
-        #values = attrs.merge({user_id: user.id})
-        #po = PipelineOutput.where(values).first_or_create!
-        #po.samples << sp unless po.samples.includes?(sp)
-      #end
-    #rescue StandardError => e
-      #errors << e.message
-      #raise ActiveRecord::Rollback
-    #end
-    true
+    raise StandardError.new("Cannot import invalid data") unless valid?
+
+    ActiveRecord::Base.transaction do
+      values = attrs.merge({user_id: user.id})
+      tags = values.delete('tags')
+      note = values.delete('note')
+
+      po = PipelineOutput.where(values).first_or_create!
+      po.sequencing_products = (sequence_products + po.sequencing_products).uniq
+      if note
+        po.notes = note
+      end
+      if tags&.any?
+        po.tag!(*tags)
+      end
+      po.save!
+    rescue StandardError => e
+      errors << e.message
+      raise ActiveRecord::Rollback
+    end
+    return errors.none?
   end
 
   private 
-  def validate
-    @errors = JSON::Validator.fully_validate(SCHEMA, request)
+  def validate_json
+    @errors += JSON::Validator.fully_validate(SCHEMA, request)
+  end
+
+  def validate_identifiers
+    sequence_product_paths = attrs.delete('input_paths')
+    @sequence_products = SequencingProduct.where(unaligned_data_path: sequence_product_paths).includes(:sample)
+
+    if sequence_products.size != sequence_product_paths.size
+      @errors << "Specified Sequence Product paths #{sequence_product_paths.join(", ")} but only #{products.map(&:unaligned_data_path).join(", ")} found."
+    end
+
+    sequence_products.each do |sp|
+      unless sp.sample.project_ids.include?(attrs['project_id'])
+        @errors << "Sequence Product #{sp.unaligned_data_path} is not a member of Project #{attrs['project_id']}"
+      end
+    end
+
+    unless Project.where(id: attrs['project_id']).exists?
+      @errors << "Project with ID #{attrs['project_id']} not found."
+    end
   end
 
 
-  attr_reader :request, :user
+  attr_reader :request, :user, :sequence_products, :attrs
 
   SCHEMA = {
     type: 'object',
@@ -65,10 +93,21 @@ class ImportPipelineOutputsRequest
       platformIdentifier: {
         type: 'string'
       },
-      dataPath: {
+      dataLocation: {
         type: 'string'
       },
-      sampleNames: {
+      notes: {
+        type: 'string'
+      },
+      tags: {
+        type: 'array',
+        items: {
+          type: 'string'
+        },
+        minItems: 1,
+        uniqueItems: true
+      },
+      inputPaths: {
         type: 'array',
         items: {
           type: 'string'
@@ -83,8 +122,8 @@ class ImportPipelineOutputsRequest
       'pipelineVersion',
       'platform',
       'platformIdentifier',
-      'sampleNames',
-      'dataPath'
+      'inputPaths',
+      'dataLocation'
     ]
   }
 end
@@ -95,7 +134,7 @@ end
   #pipeline_version: String, #req
   #platform: String, #req
   #platform_identifier: String, #req
-  #sample_names: [String], #req
+  #input_paths: [String], #req
   #data_path: String, #req
   #run_completed_at: DateTime #op
 #}

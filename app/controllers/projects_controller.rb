@@ -56,6 +56,9 @@ class ProjectsController < ApplicationController
     @table_name = if params[:display] == 'sequencing_products'
                     ransack_sequence_products(project_id: @project.id)
                     'projects/project_sequencing_products'
+                  elsif params[:display] == 'pipeline_outputs'
+                    ransack_pipeline_outputs(project_id: @project.id)
+                    'projects/project_pipeline_outputs'
                   else
                     ransack_samples(project_id: @project.id)
                     'projects/project_samples'

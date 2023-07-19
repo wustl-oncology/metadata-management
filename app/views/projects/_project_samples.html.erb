@@ -2,7 +2,7 @@
   <div class="tabs is-toggle is-fullwidth is-medium">
     <li class="is-active"><a>Samples</a></li>
     <li><%= link_to 'Sequence Products', project_path(@project, display: 'sequencing_products') %></li>
-    <li><a>Pipeline Outputs</a></li>
+    <li><%= link_to 'Pipeline Outputs', project_path(@project, display: 'pipeline_outputs') %></li>
   </div>
   <%= render partial: 'shared/browse_table', locals: {filter_partial: 'samples/filters', header_partial: 'samples/table_headers', body_partial: 'samples/table_rows', collection: @samples, selected_item_id: 'projects-menu-item'} %>
 <% end %>

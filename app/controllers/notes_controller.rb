@@ -13,6 +13,7 @@ class NotesController < ApplicationController
   @@notables = {
     'project' => Project,
     'sample' => Sample,
-    'sequencing_product' => SequencingProduct
+    'sequencing_product' => SequencingProduct,
+    'pipeline_output' => PipelineOutput
   }
 end

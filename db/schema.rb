@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_144731) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_181815) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_144731) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.text "data_location", null: false
+    t.text "notes"
     t.index ["pipeline_name"], name: "index_pipeline_outputs_on_pipeline_name"
     t.index ["pipeline_version"], name: "index_pipeline_outputs_on_pipeline_version"
     t.index ["platform"], name: "index_pipeline_outputs_on_platform"

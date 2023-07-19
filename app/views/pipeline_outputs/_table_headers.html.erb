@@ -1,0 +1,11 @@
+<%# locals: (query:) -%>
+<tr>
+  <th><%= sort_link(query, :platform) %></th>
+  <th><%= sort_link(query, :pipeline_name, 'Pipeline') %></th>
+  <th><%= sort_link(query, :pipeline_version) %></th>
+  <th><%= sort_link(query, :platform_identifier, 'Platform ID') %></th>
+  <th><%= sort_link(query, :data_location) %></th>
+  <th>Sequence Products</th>
+  <th>Notes</th>
+  <th>Tags</th>
+</tr>

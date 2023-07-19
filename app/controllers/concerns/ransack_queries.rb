@@ -49,4 +49,32 @@ module RansackQueries
       link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
     )
   end
+
+  def ransack_pipeline_outputs(project_id: nil)
+    if project_id
+      @q = PipelineOutput
+        .where(project_id: project_id)
+        .ransack(params[:q])
+    else
+      @q = PipelineOutput.ransack(params[:q])
+    end
+
+    scope = @q.result(distinct: true)
+      .includes(:tags, :project, :user, :sequencing_products)
+      .select(
+        :id,
+        :platform,
+        :pipeline_name,
+        :pipeline_version,
+        :platform_identifier,
+        :data_location,
+        :project_id,
+        :user_id
+      )
+
+    @pagy, @pipeline_outputs = pagy(
+      scope,
+      link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
+    )
+  end
 end

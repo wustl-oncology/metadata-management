@@ -1,0 +1,32 @@
+<%# locals: (collection:) -%>
+
+<% collection.each do |po| %>
+  <%= tag.tr id: dom_id(po) do %>
+    <td>
+      <%= po.platform %>
+    </td>
+    <td>
+      <%= po.pipeline_name %>
+    </td>
+    <td>
+      <%= po.pipeline_version %>
+    </td>
+    <td>
+      <%= po.platform_identifier %>
+    </td>
+    <td>
+      <%= po.data_location %>
+    </td>
+    <td>
+      <%= po.sequencing_products.map(&:unaligned_data_path).join(', ') %>
+    </td>
+    <td>
+      <%= link_to preview_note_path(subject: 'pipeline_output', id: po.id), data: { turbo_frame: :modal } do %>
+        <%= octicon "note", :height => 24 %>
+      <% end %>
+    </td>
+    <td>
+      <%= render partial: 'tags/tag_list', locals: { tags: po.tags } %>
+    </td>
+  <% end %>
+<% end %>
