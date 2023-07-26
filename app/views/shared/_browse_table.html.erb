@@ -9,6 +9,12 @@
 
 <%= turbo_frame_tag 'table' do %>
   <%= render 'shared/loader' %>
+  <div class="field is-grouped is-grouped-right">
+    <%= link_to @tsv_path, class: 'button is-small', data: { turbo: false } do %>
+      <span class="icon is-small"><%= octicon "download", :height => 24 %></span>
+      <span>Export Table</span>
+    <% end %>
+  </div>
   <table class="table is-bordered is-striped is-hoverable is-fullwidth">
     <thead>
       <tr>

@@ -10,17 +10,18 @@ module RansackQueries
       @q = Sample.ransack(params[:q])
     end
 
-    scope = @q.result(distinct: true).includes(:tags).select(
+    @scope = @q.result(distinct: true).includes(:tags).select(
       :id,
       :name,
       :species,
       :disease_status,
       :individual,
       :timepoint,
+      :notes
     )
 
     @pagy, @samples = pagy(
-      scope,
+      @scope,
       link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
     )
   end
@@ -35,17 +36,18 @@ module RansackQueries
       @q = SequencingProduct.ransack(params[:q])
     end
 
-    scope = @q.result(distinct: true).includes(:tags, :sample).select(
+    @scope = @q.result(distinct: true).includes(:tags, :sample).select(
       :id,
       :library_prep,
       :flow_cell_id,
       :instrument,
       :unaligned_data_path,
       :sample_id,
+      :notes
     )
 
     @pagy, @sequencing_products = pagy(
-      scope,
+      @scope,
       link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
     )
   end
@@ -59,7 +61,7 @@ module RansackQueries
       @q = PipelineOutput.ransack(params[:q])
     end
 
-    scope = @q.result(distinct: true)
+    @scope = @q.result(distinct: true)
       .includes(:tags, :project, :user, :sequencing_products)
       .select(
         :id,
@@ -69,11 +71,12 @@ module RansackQueries
         :platform_identifier,
         :data_location,
         :project_id,
-        :user_id
+        :user_id,
+        :notes
       )
 
     @pagy, @pipeline_outputs = pagy(
-      scope,
+      @scope,
       link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
     )
   end

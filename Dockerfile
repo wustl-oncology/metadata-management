@@ -63,7 +63,7 @@ server {
   root /rails/public;
 
   location /cable {
-    proxy_pass http://localhost:8082/cable;
+    proxy_pass http://localhost:3001/cable;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "Upgrade";
@@ -76,7 +76,12 @@ server {
 
   location @backend {
     proxy_pass http://localhost:3001;
-    proxy_set_header origin 'http://localhost:3000';
+    proxy_set_header  Host $host;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header  X-Forwarded-Proto $scheme;
+    proxy_set_header  X-Forwarded-Ssl on; # Optional
+    proxy_set_header  X-Forwarded-Port $server_port;
+    proxy_set_header  X-Forwarded-Host $host;
   }
 }
 EOF
@@ -104,6 +109,7 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 COPY <<-"EOF" /rails/Procfile.prod
 nginx: /usr/sbin/nginx -g "daemon off;"
 rails: ./bin/rails server -p 3001
+sidekiq: bundle exec sidekiq -c 1
 EOF
 
 # Start the server by default, this can be overwritten at runtime

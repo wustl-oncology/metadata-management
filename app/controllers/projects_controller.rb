@@ -1,17 +1,24 @@
 class ProjectsController < ApplicationController
   include RansackQueries
+  include TableDownloader
 
   before_action :set_project, only: [:show, :edit, :update]
 
   def index
     @q = Project.ransack(params[:q])
 
-    scope = @q.result(distinct: true).includes(:tags).select(:id, :name, :lab)
+    scope = @q.result(distinct: true).includes(:tags).select(:id, :name, :lab, :notes)
 
     @pagy, @projects = pagy(
       scope,
       link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
     )
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+      format.tsv { stream_table(results: scope, filename: 'projects', formatter: TsvFormatters::Project.new)  }
+    end
   end
 
   def show
