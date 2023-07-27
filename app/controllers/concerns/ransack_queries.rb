@@ -2,9 +2,9 @@ module RansackQueries
   extend ActiveSupport::Concern
 
   def ransack_samples(project_id: nil)
-    if project_id
+    if project_id.present?
       @q = Sample.joins(:projects)
-        .where(projects: { id: @project.id  })
+        .where(projects: { id: project_id  })
         .ransack(params[:q])
     else
       @q = Sample.ransack(params[:q])
@@ -27,7 +27,7 @@ module RansackQueries
   end
 
   def ransack_sequence_products(project_id: nil)
-    if project_id
+    if project_id.present?
       @q = SequencingProduct
         .joins(sample: [:projects])
         .where(samples: { projects: { id: project_id }})
@@ -53,7 +53,7 @@ module RansackQueries
   end
 
   def ransack_pipeline_outputs(project_id: nil)
-    if project_id
+    if project_id.present?
       @q = PipelineOutput
         .where(project_id: project_id)
         .ransack(params[:q])

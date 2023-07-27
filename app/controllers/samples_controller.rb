@@ -3,7 +3,7 @@ class SamplesController < ApplicationController
   include TableDownloader
 
   def index
-    ransack_samples
+    ransack_samples(project_id: params.dig(:q,:project_id))
     respond_to do |format|
       format.html
       format.turbo_stream

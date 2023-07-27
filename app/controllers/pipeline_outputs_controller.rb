@@ -3,7 +3,7 @@ class PipelineOutputsController < ApplicationController
   include TableDownloader
 
   def index
-    ransack_pipeline_outputs
+    ransack_pipeline_outputs(project_id: params.dig(:q,:project_id))
 
     respond_to do |format|
       format.html

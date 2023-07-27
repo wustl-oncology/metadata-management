@@ -3,7 +3,7 @@ class SequencingProductsController < ApplicationController
   include TableDownloader
 
   def index
-    ransack_sequence_products
+    ransack_sequence_products(project_id: params.dig(:q,:project_id))
     respond_to do |format|
       format.html
       format.turbo_stream

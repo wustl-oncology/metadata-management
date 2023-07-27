@@ -70,5 +70,6 @@ class ProjectsController < ApplicationController
                     ransack_samples(project_id: @project.id)
                     'projects/project_samples'
                   end
+    #TODO set project ID? - hidden input?
   end
 end
