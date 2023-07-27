@@ -54,6 +54,20 @@ class ImportPipelineOutputsRequest
   end
 
   def validate_identifiers
+    if attrs['project_name']
+      name = attrs.delete('project_name')
+      p = Project.find_by(name: name&.strip)
+      if p
+        attrs['project_id'] = p.id
+      else
+        @errors << "Project with name #{name} not found."
+      end
+    else
+      unless Project.where(id: attrs['project_id']).exists?
+        @errors << "Project with ID #{attrs['project_id']} not found."
+      end
+    end
+
     sequence_product_paths = attrs.delete('input_paths')
     @sequence_products = SequencingProduct.where(unaligned_data_path: sequence_product_paths).includes(:sample)
 
@@ -66,10 +80,6 @@ class ImportPipelineOutputsRequest
         @errors << "Sequence Product #{sp.unaligned_data_path} is not a member of Project #{attrs['project_id']}"
       end
     end
-
-    unless Project.where(id: attrs['project_id']).exists?
-      @errors << "Project with ID #{attrs['project_id']} not found."
-    end
   end
 
 
@@ -78,9 +88,6 @@ class ImportPipelineOutputsRequest
   SCHEMA = {
     type: 'object',
     properties: {
-      projectId: {
-        type: 'integer'
-      },
       pipelineName: {
         type: 'string'
       },
@@ -117,13 +124,26 @@ class ImportPipelineOutputsRequest
       }
     },
     required: [
-      'projectId',
       'pipelineName',
       'pipelineVersion',
       'platform',
       'platformIdentifier',
       'inputPaths',
       'dataLocation'
+    ],
+    oneOf: [
+      properties: {
+        projectId: {
+          type: 'integer'
+        },
+        required: [ 'projectId' ]
+      },
+      properties: {
+        projectName: {
+          type: 'string'
+        },
+        required: [ 'projectName' ]
+      }
     ]
   }
 end
