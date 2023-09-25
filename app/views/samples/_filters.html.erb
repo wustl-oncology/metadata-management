@@ -2,8 +2,8 @@
 <div class="control is-expanded">
   <%= form.search_field :name_cont, placeholder: 'Name', class: 'input', data: { action: 'debounce#submit' }  %>
 </div>
-<div class="control">
-  <%= form.search_field :disease_status_cont, placeholder: 'Disease Status', class: 'input', data: { action: 'debounce#submit' }  %>
+<div class="select">
+  <%= form.select :disease_status_eq, options_for_select(Sample.distinct.pluck(:disease_status), @q.disease_status_eq), { prompt: 'Disease Status' }, data: { action: 'debounce#submit' }  %>
 </div>
 <div class="control">
   <%= form.search_field :individual_cont, placeholder: 'Individual', class: 'input', data: { action: 'debounce#submit' }  %>

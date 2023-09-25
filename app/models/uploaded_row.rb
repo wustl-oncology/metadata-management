@@ -58,7 +58,7 @@ class UploadedRow
     proposed_product = SequencingProduct.from_upload_row(row)
 
     if existing_product
-      [:library_prep, :instrument, :flow_cell_id].each do |field|
+      [:library_prep, :instrument, :flow_cell_id, :strand, :kit, :targeted_capture, :paired_end, :batch].each do |field|
         if existing_product.send(field) != proposed_product.send(field)
           errors << "#{field.to_s_humanize} value for sequencing product #{existing_product.unaligned_data_path} conflicts with existing data."
         end

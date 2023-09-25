@@ -9,12 +9,29 @@ class SequencingProduct < ApplicationRecord
       library_prep: row['Library Prep'],
       instrument: row['Instrument'],
       unaligned_data_path: row['Unaligned Data Path'],
-      flow_cell_id: row['Flow Cell ID']
+      flow_cell_id: row['Flow Cell ID'],
+      strand: row['Strand'],
+      kit: row['Kit'],
+      targeted_capture: row['Targeted Capture'],
+      paired_end: row['Paired End'],
+      batch: row['Batch']
     )
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["library_prep", "flow_cell_id", "instrument", "unaligned_data_path", "created_at", "updated_at"]
+    [
+      "library_prep",
+      "flow_cell_id",
+      "instrument",
+      "unaligned_data_path",
+      "strand",
+      "kit",
+      "targeted_capture",
+      "paired_end",
+      "batch",
+      "created_at",
+      "updated_at"
+    ]
   end
 
   def self.ransackable_associations(auth_object = nil)

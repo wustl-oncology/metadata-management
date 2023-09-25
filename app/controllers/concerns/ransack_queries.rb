@@ -36,14 +36,20 @@ module RansackQueries
       @q = SequencingProduct.ransack(params[:q])
     end
 
-    @scope = @q.result(distinct: true).includes(:tags, :sample).select(
+    @scope = @q.result(distinct: true).eager_load(:tags, :sample).select(
       :id,
       :library_prep,
       :flow_cell_id,
       :instrument,
       :unaligned_data_path,
+      :strand,
+      :kit,
+      :targeted_capture,
+      :paired_end,
+      :batch,
       :sample_id,
-      :notes
+      :notes,
+      "samples.name"
     )
 
     @pagy, @sequencing_products = pagy(

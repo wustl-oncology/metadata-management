@@ -3,7 +3,7 @@
 <% collection.each do |sample| %>
   <%= tag.tr id: dom_id(sample) do %>
     <td>
-      <%= sample.name %>
+      <%= link_to sample.name, sequencing_products_path(q: {sample_name_cont: sample.name}), data: { turbo_frame: :_top}  %>
     </td>
     <td>
       <%= sample.species %>

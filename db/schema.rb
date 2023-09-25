@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_26_223316) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_21_141941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,6 +123,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_223316) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "library_prep"
+    t.text "strand"
+    t.text "kit"
+    t.text "targeted_capture"
+    t.text "paired_end"
+    t.text "batch"
     t.index ["flow_cell_id"], name: "index_sequencing_products_on_flow_cell_id"
     t.index ["instrument"], name: "index_sequencing_products_on_instrument"
     t.index ["sample_id"], name: "index_sequencing_products_on_sample_id"

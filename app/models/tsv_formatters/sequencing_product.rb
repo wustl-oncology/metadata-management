@@ -8,6 +8,11 @@ module TsvFormatters
         'flow_cell_id',
         'instrument',
         'unaligned_data_path',
+        "strand",
+        "kit",
+        "targeted_capture",
+        "paired_end",
+        "batch",
         'notes',
         'tags'
       ]
@@ -21,6 +26,10 @@ module TsvFormatters
         sp.flow_cell_id,
         sp.instrument,
         sp.unaligned_data_path,
+        sp.strand,
+        sp.kit,
+        sp.targeted_capture,
+        sp.paired_end,
         sp.notes,
         sp.tags.map(&:tag).join(',')
       ]
