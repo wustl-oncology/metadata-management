@@ -3,7 +3,7 @@
 <% collection.each do |sp| %>
   <%= tag.tr id: dom_id(sp) do %>
     <td>
-      <%= link_to sp.sample.name, samples_path(q: {name_cont: sp.sample.name}), data: { turbo_frame: :_top}  %>
+      <%= link_to sp.sample.name, sample_path(sp), data: { turbo_frame: :_top}  %>
     </td>
     <td>
       <%= sp.library_prep %>
@@ -15,7 +15,7 @@
       <%= sp.instrument %>
     </td>
     <td>
-      <%= sp.unaligned_data_path %>
+      <%= link_to sp.unaligned_data_path, sequencing_product_path(sp), data: { turbo_frame: :_top } %> 
     </td>
     <td>
       <%= sp.strand %>

@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
 
     @pagy, @projects = pagy(
       scope,
-      link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
+      link_extra: 'data-turbo-action="advance"'
     )
 
     respond_to do |format|
@@ -56,7 +56,7 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = Project.includes(:tags, :user).find(params[:id])
+    @project = Project.includes(:tags, :user).find(params.permit(:id)[:id])
   end
 
   def setup_table_queries

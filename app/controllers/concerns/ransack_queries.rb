@@ -22,7 +22,7 @@ module RansackQueries
 
     @pagy, @samples = pagy(
       @scope,
-      link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
+      link_extra: 'data-turbo-action="advance"'
     )
   end
 
@@ -54,7 +54,7 @@ module RansackQueries
 
     @pagy, @sequencing_products = pagy(
       @scope,
-      link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
+      link_extra: 'data-turbo-action="advance"'
     )
   end
 
@@ -83,7 +83,7 @@ module RansackQueries
 
     @pagy, @pipeline_outputs = pagy(
       @scope,
-      link_extra: 'data-turbo-frame="projects_table" data-turbo-action="advance"'
+      link_extra: 'data-turbo-action="advance"'
     )
   end
 end

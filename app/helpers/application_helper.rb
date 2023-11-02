@@ -24,4 +24,10 @@ module ApplicationHelper
       'circle-slash'
     end
   end
+
+  def half_array(array)
+    len = array.size
+    first = (len/2.0).ceil
+    [array.take(first), array.drop(first)]
+  end
 end

@@ -1,0 +1,46 @@
+<%= turbo_frame_tag :sequencing_product do %>
+  <div class="card block">
+    <header class="card-header">
+      <div class="card-header-title">
+        <span class="mr-3">Sequencing Product: <%= @sp.unaligned_data_path %></span>
+
+        <%= render partial: 'tags/tag_list', locals: { tags: @sp.tags } %>
+      </div>
+    </header>
+
+    <div class="card-content">
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Pipeline Outputs</p>
+            <p class="title"><%= @sp.pipeline_outputs.count %></p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Projects</p>
+            <p class="title"><%= Project.joins(samples: [:sequencing_products]).where(samples: {sequencing_products: @sp}).distinct.count %></p>
+          </div>
+        </div>
+      </nav>
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <strong>Notes:</strong>
+            <div class="has-background-white-bis notes-display">
+              <div class="p-4">
+                <%== @sp.formatted_notes || 'None' %>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <%= render partial: 'shared/attribute_table', locals: {obj: @sp, attribute_list: @attrs } %>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+<% end %>
+
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'sequencing-products-menu-item' } %>

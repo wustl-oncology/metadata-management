@@ -15,10 +15,10 @@
       <%= po.platform_identifier %>
     </td>
     <td>
-      <%= po.data_location %>
+      <%= link_to po.data_location, pipeline_output_path(po), data: {turbo_frame: :_top } %>
     </td>
     <td>
-      <%= po.sequencing_products.map(&:unaligned_data_path).join(', ') %>
+      <%== po.sequencing_products.map { |s| link_to s.unaligned_data_path, sequencing_product_path(s), data: { turbo_frame: :_top } } .join(', ') %>
     </td>
     <td>
       <%= link_to preview_note_path(subject: 'pipeline_output', id: po.id), data: { turbo_frame: :modal } do %>

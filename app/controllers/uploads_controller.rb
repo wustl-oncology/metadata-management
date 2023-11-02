@@ -23,6 +23,6 @@ class UploadsController < ApplicationController
 
   private
   def set_project
-    @project = Project.find(params[:project_id])
+    @project = Project.find(params.permit(:project_id)[:project_id])
   end
 end

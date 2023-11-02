@@ -2,7 +2,7 @@
   <div class="card block">
     <header class="card-header">
       <div class="card-header-title">
-        <span class="mr-3"><%= @project.name %></span>
+        <span class="mr-3">Project: <%= @project.name %></span>
 
         <%= render partial: 'tags/tag_list', locals: { tags: @project.tags } %>
       </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Sequence Objects</p>
+            <p class="heading">Sequence Product</p>
             <p class="title"><%= SequencingProduct.where(sample_id: @project.sample_ids).count %></p>
           </div>
         </div>

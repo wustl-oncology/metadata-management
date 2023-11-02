@@ -1,0 +1,17 @@
+<%# locals: (attribute_list:, obj:) %>
+<div class="columns is-8 is-variable">
+  <% half_array(attribute_list).each do |attrs| %>
+    <div class="column">
+      <table class="table is-fullwidth">
+        <tbody>
+          <% attrs.each do |(name, value)| %>
+            <tr>
+              <td><strong><%= name %>:</strong></td>
+              <td><%== value || '--' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
