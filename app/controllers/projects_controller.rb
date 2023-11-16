@@ -61,13 +61,23 @@ class ProjectsController < ApplicationController
 
   def setup_table_queries
     @table_name = if params[:display] == 'sequencing_products'
-                    ransack_sequence_products(project_id: @project.id)
+                    q = SequencingProduct
+                      .joins(sample: [:projects])
+                      .where(samples: { projects: { id: @project.id }})
+                      .ransack(params[:q])
+                    ransack_sequence_products(base_query: q)
                     'projects/project_sequencing_products'
                   elsif params[:display] == 'pipeline_outputs'
-                    ransack_pipeline_outputs(project_id: @project.id)
+                    q = PipelineOutput
+                        .where(project_id: @project.id)
+                        .ransack(params[:q])
+                    ransack_pipeline_outputs(base_query: q)
                     'projects/project_pipeline_outputs'
                   else
-                    ransack_samples(project_id: @project.id)
+                    q = Sample.joins(:projects)
+                      .where(projects: { id: @project.id  })
+                      .ransack(params[:q])
+                    ransack_samples(base_query: q)
                     'projects/project_samples'
                   end
     #TODO set project ID? - hidden input?

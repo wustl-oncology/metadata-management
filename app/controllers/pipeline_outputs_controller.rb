@@ -15,6 +15,7 @@ class PipelineOutputsController < ApplicationController
   end
 
   def show
+    setup_table_queries
     @attrs = [
       ['Pipeline Name', @po.pipeline_name],
       ['Pipeline Version', @po.pipeline_version],
@@ -30,5 +31,22 @@ class PipelineOutputsController < ApplicationController
   def set_pipeline_output
     @po = PipelineOutput.includes(:tags, :user, :project)
       .find(params.permit(:id)[:id])
+  end
+
+  def setup_table_queries
+    @table_name = if params[:display] == 'sequencing_products'
+                    q = SequencingProduct
+                      .joins(:pipeline_outputs)
+                      .where(pipeline_outputs: { id: @po.id })
+                      .ransack(params[:q])
+                    ransack_sequence_products(base_query: q)
+                    'pipeline_outputs/pipeline_outputs_sequencing_products'
+                  else
+                    q = Sample.joins(sequencing_products: [:pipeline_outputs])
+                      .where(sequencing_products: { pipeline_outputs: { id: @po.id  }})
+                      .ransack(params[:q])
+                    ransack_samples(base_query: q)
+                    'pipeline_outputs/pipeline_outputs_samples'
+                  end
   end
 end

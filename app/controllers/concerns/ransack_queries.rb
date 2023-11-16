@@ -1,11 +1,9 @@
 module RansackQueries
   extend ActiveSupport::Concern
 
-  def ransack_samples(project_id: nil)
-    if project_id.present?
-      @q = Sample.joins(:projects)
-        .where(projects: { id: project_id  })
-        .ransack(params[:q])
+  def ransack_samples(base_query: nil)
+    if base_query.present?
+      @q = base_query
     else
       @q = Sample.ransack(params[:q])
     end
@@ -26,12 +24,9 @@ module RansackQueries
     )
   end
 
-  def ransack_sequence_products(project_id: nil)
-    if project_id.present?
-      @q = SequencingProduct
-        .joins(sample: [:projects])
-        .where(samples: { projects: { id: project_id }})
-        .ransack(params[:q])
+  def ransack_sequence_products(base_query: nil)
+    if base_query.present?
+      @q = base_query
     else
       @q = SequencingProduct.ransack(params[:q])
     end
@@ -58,11 +53,9 @@ module RansackQueries
     )
   end
 
-  def ransack_pipeline_outputs(project_id: nil)
-    if project_id.present?
-      @q = PipelineOutput
-        .where(project_id: project_id)
-        .ransack(params[:q])
+  def ransack_pipeline_outputs(base_query: nil)
+    if base_query.present?
+      @q = base_query
     else
       @q = PipelineOutput.ransack(params[:q])
     end
@@ -82,6 +75,31 @@ module RansackQueries
       )
 
     @pagy, @pipeline_outputs = pagy(
+      @scope,
+      link_extra: 'data-turbo-action="advance"'
+    )
+  end
+
+  def ransack_projects(base_query: nil)
+    if base_query.present?
+      @q = base_query
+    else
+      @q = Project.ransack(params[:q])
+    end
+
+    @scope = @q.result(distinct: true)
+      .includes(:tags, :user)
+      .select(
+        :id,
+        :name,
+        :lab,
+        :notes,
+        :created_at,
+        :updated_at,
+        :user_id,
+      )
+
+    @pagy, @projects = pagy(
       @scope,
       link_extra: 'data-turbo-action="advance"'
     )

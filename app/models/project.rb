@@ -12,6 +12,6 @@ class Project < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ['samples', 'tags']
+    ['samples', 'tags', 'user']
   end
 end

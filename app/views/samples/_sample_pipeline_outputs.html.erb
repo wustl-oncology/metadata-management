@@ -1,0 +1,8 @@
+<%= turbo_frame_tag :browse_view do %>
+  <div class="tabs is-toggle is-fullwidth is-medium">
+    <li><%= link_to 'Projects', sample_path(@sample, display: 'projects') %></li>
+    <li><%= link_to 'Sequence Products', sample_path(@sample, display: 'sequencing_products')%></li>
+    <li class="is-active"><a>Pipeline Outputs</a></li>
+  </div>
+  <%= render partial: 'shared/browse_table', locals: {filter_partial: 'pipeline_outputs/filters', header_partial: 'pipeline_outputs/table_headers', body_partial: 'pipeline_outputs/table_rows', collection: @pipeline_outputs, selected_item_id: 'samples-menu-item'} %>
+<% end %>
