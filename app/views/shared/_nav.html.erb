@@ -21,6 +21,11 @@
           <%= @current_user.name %>
         </a>
         <div class="navbar-dropdown is-right">
+          <% if current_user.admin? %>
+            <%= link_to '/admin', class: "navbar-item" do %>
+              Admin
+            <% end %>
+          <% end %>
           <% if policy(Project).new? %>
             <%= link_to new_project_path, class: "navbar-item" do %>
               Create Project
