@@ -1,4 +1,6 @@
 class NotesController < ApplicationController
+  after_action :verify_authorized, except: [:preview]
+
   def preview
     @note = find_note
   end
