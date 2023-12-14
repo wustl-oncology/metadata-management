@@ -8,7 +8,7 @@
       <% end %>
     </td>
     <td>
-      <%= project.lab %>
+      <%= project.lab.name %>
     </td>
     <td>
       <%= link_to preview_note_path(subject: 'project', id: project.id), data: { turbo_frame: :modal } do %>

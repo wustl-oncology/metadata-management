@@ -8,6 +8,11 @@ class PipelineOutputsApiController < ApplicationController
   def create
     request.request_parameters.delete('pipeline_outputs_api')
     import_request = ImportPipelineOutputsRequest.new(request.request_parameters , current_user)
+
+    if import_request.valid?
+      authorize import_request.project, policy_class: ApiResultsPolicy 
+    end
+
     if import_request.valid? && import_request.import
       head :created
     else

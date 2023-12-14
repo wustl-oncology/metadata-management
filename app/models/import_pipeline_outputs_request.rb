@@ -1,7 +1,7 @@
 require 'json-schema'
 
 class ImportPipelineOutputsRequest
-  attr_reader :errors
+  attr_reader :errors, :project
 
   def initialize(request, user)
     @request = request
@@ -59,11 +59,15 @@ class ImportPipelineOutputsRequest
       p = Project.find_by(name: name&.strip)
       if p
         attrs['project_id'] = p.id
+        @project = p
       else
         @errors << "Project with name #{name} not found."
       end
     else
-      unless Project.where(id: attrs['project_id']).exists?
+      p = Project.find_by(id: attrs['project_id'])
+      if p
+        @project = p
+      else
         @errors << "Project with ID #{attrs['project_id']} not found."
       end
     end

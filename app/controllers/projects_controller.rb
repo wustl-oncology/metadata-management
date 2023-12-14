@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   def index
     @q = Project.ransack(params[:q])
 
-    scope = @q.result(distinct: true).includes(:tags).select(:id, :name, :lab, :notes)
+    scope = @q.result(distinct: true).includes(:tags, :lab).select(:id, :name, :notes, :lab_id)
 
     @pagy, @projects = pagy(
       scope,
@@ -26,23 +26,31 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    authorize @project
   end
 
   def new
     @project = Project.new
+    authorize @project
+    @labs = LabMembership.where(user: current_user, permissions: 'write').includes(:lab).map(&:lab)
   end
 
   def create
     @project = Project.new(project_params.merge({user: current_user}))
 
+    authorize @project
+
     if @project.save
       redirect_to @project
     else
+      @labs = LabMembership.where(user: current_user, permissions: 'write').includes(:lab).map(&:lab)
       render :new
     end
   end
 
   def update
+    authorize @project
+
     if @project.update(project_params)
       redirect_to @project
     else
@@ -52,11 +60,11 @@ class ProjectsController < ApplicationController
 
   private
   def project_params
-    params.require(:project).permit(:name, :lab, :notes)
+    params.require(:project).permit(:name, :lab_id, :notes)
   end
 
   def set_project
-    @project = Project.includes(:tags, :user).find(params.permit(:id)[:id])
+    @project = Project.includes(:tags, :user, :lab).find(params.permit(:id)[:id])
   end
 
   def setup_table_queries

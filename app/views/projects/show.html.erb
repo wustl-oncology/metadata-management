@@ -8,7 +8,7 @@
       </div>
       <div class="card-header-icon">
         <span class="mr-3 is-size-6 has-text-grey">
-          <strong>Lab:</strong> <%= @project.lab %>
+          <strong>Lab:</strong> <%= @project.lab.name %>
         </span>
         <span class="mr-3 is-size-6 has-text-grey">
           <strong>Created By:</strong> <%= @project.user&.name %>
@@ -17,9 +17,11 @@
           <span class="icon is-small"><%= octicon "upload", :height => 24 %></span>
           <span>Import Data</span>
         <% end %>
-        <%= link_to edit_project_path(@project), class: 'button is-small' do %>
-          <span class="icon is-small"><%= octicon "pencil", :height => 24 %></span>
-          <span>Edit Project</span>
+        <% if policy(@project).edit? %>
+          <%= link_to edit_project_path(@project), class: 'button is-small' do %>
+            <span class="icon is-small"><%= octicon "pencil", :height => 24 %></span>
+            <span>Edit Project</span>
+          <% end %>
         <% end %>
       </div>
     </header>

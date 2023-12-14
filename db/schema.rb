@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_01_215444) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_02_151528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,22 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_01_215444) do
     t.index ["path"], name: "index_input_bundles_on_path"
   end
 
+  create_table "lab_memberships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "lab_id", null: false
+    t.integer "permissions", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lab_id"], name: "index_lab_memberships_on_lab_id"
+    t.index ["user_id"], name: "index_lab_memberships_on_user_id"
+  end
+
+  create_table "labs", force: :cascade do |t|
+    t.text "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "pipeline_outputs", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.text "pipeline_name", null: false
@@ -83,12 +99,11 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_01_215444) do
 
   create_table "projects", force: :cascade do |t|
     t.text "name", null: false
-    t.text "lab", null: false
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.index ["lab"], name: "index_projects_on_lab"
+    t.integer "lab_id"
     t.index ["name"], name: "index_projects_on_name"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
@@ -166,14 +181,18 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_01_215444) do
     t.datetime "updated_at", null: false
     t.text "github_uid", null: false
     t.text "api_key", null: false
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["name"], name: "index_users_on_name"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "lab_memberships", "labs"
+  add_foreign_key "lab_memberships", "users"
   add_foreign_key "pipeline_outputs", "projects"
   add_foreign_key "pipeline_outputs_sequencing_products", "pipeline_outputs", name: "fk_pipelineoutputs_bridge"
   add_foreign_key "pipeline_outputs_sequencing_products", "sequencing_products", name: "fk_sequenceproduct_bridge"
+  add_foreign_key "projects", "labs"
   add_foreign_key "sequencing_products", "samples"
 end

@@ -11,7 +11,8 @@ class User < ApplicationRecord
 
   has_many :projects
   has_many :pipeline_outputs
-
+  has_many :lab_memberships, dependent: :destroy
+  has_many :labs, through: :lab_memberships
 
   def self.ransackable_attributes(auth_object = nil)
     [:id, :created_at, :updated_at]
