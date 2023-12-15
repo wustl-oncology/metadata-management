@@ -2,9 +2,12 @@ class UploadsController < ApplicationController
   before_action :set_project
 
   def new
+    authorize @project, policy_class: UploadPolicy
   end
 
   def create
+    authorize @project, policy_class: UploadPolicy
+
     if params[:import]
       @upload = Upload.create!(
         project_id: params[:project_id],

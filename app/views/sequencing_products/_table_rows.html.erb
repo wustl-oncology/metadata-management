@@ -3,7 +3,7 @@
 <% collection.each do |sp| %>
   <%= tag.tr id: dom_id(sp) do %>
     <td>
-      <%= link_to sp.sample.name, sample_path(sp), data: { turbo_frame: :_top}  %>
+      <%= link_to sp.sample.name, sample_path(sp.sample), data: { turbo_frame: :_top}  %>
     </td>
     <td>
       <%= sp.library_prep %>
