@@ -1,4 +1,4 @@
-<%# locals: (collection:) -%>
+<%# locals: (collection:, expanded: false) -%>
 
 <% collection.each do |sp| %>
   <%= tag.tr id: dom_id(sp) do %>
@@ -12,25 +12,7 @@
       <%= sp.flow_cell_id %>
     </td>
     <td>
-      <%= sp.instrument %>
-    </td>
-    <td>
       <%= link_to sp.unaligned_data_path, sequencing_product_path(sp), data: { turbo_frame: :_top } %> 
-    </td>
-    <td>
-      <%= sp.strand %>
-    </td>
-    <td>
-      <%= sp.kit %>
-    </td>
-    <td>
-      <%= sp.targeted_capture %>
-    </td>
-    <td>
-      <%= sp.paired_end %>
-    </td>
-    <td>
-      <%= sp.batch %>
     </td>
     <td>
       <%= link_to preview_note_path(subject: 'sequencing_product', id: sp.id), data: { turbo_frame: :modal } do %>
@@ -40,5 +22,25 @@
     <td>
       <%= render partial: 'tags/tag_list', locals: { tags: sp.tags } %>
     </td>
+    <% if expanded %>
+      <td>
+        <%= sp.instrument %>
+      </td>
+      <td>
+        <%= sp.strand %>
+      </td>
+      <td>
+        <%= sp.kit %>
+      </td>
+      <td>
+        <%= sp.targeted_capture %>
+      </td>
+      <td>
+        <%= sp.paired_end %>
+      </td>
+      <td>
+        <%= sp.batch %>
+      </td>
+    <% end %>
   <% end %>
 <% end %>

@@ -2,6 +2,7 @@ class Project < ApplicationRecord
   include Taggable
   include WithNote
   has_and_belongs_to_many :samples
+  has_many :pipeline_outputs
   belongs_to :user
   belongs_to :lab
 

@@ -1,15 +1,17 @@
-<%# locals: (query:) -%>
+<%# locals: (query:, expanded: false) -%>
 <tr>
   <th><%= sort_link(query, :sample_name, 'Sample') %></th>
   <th><%= sort_link(query, :library_prep) %></th>
   <th><%= sort_link(query, :flow_cell_id) %></th>
-  <th><%= sort_link(query, :instrument) %></th>
   <th><%= sort_link(query, :unaligned_data_path) %></th>
-  <th><%= sort_link(query, :strand) %></th>
-  <th><%= sort_link(query, :kit) %></th>
-  <th><%= sort_link(query, :targeted_capture) %></th>
-  <th><%= sort_link(query, :paired_end, 'Paired End') %></th>
-  <th><%= sort_link(query, :batch) %></th>
   <th>Notes</th>
   <th>Tags</th>
+  <% if expanded %>
+    <th><%= sort_link(query, :instrument) %></th>
+    <th><%= sort_link(query, :strand) %></th>
+    <th><%= sort_link(query, :kit) %></th>
+    <th><%= sort_link(query, :targeted_capture) %></th>
+    <th><%= sort_link(query, :paired_end, 'Paired End') %></th>
+    <th><%= sort_link(query, :batch) %></th>
+  <% end %>
 </tr>

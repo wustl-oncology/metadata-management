@@ -5,7 +5,11 @@ class SamplesController < ApplicationController
   before_action :set_sample, only: [:show]
 
   def index
-    ransack_samples
+    if (project_id = params.dig(:q, :project_id))
+      ransack_samples(base_query: Sample.joins(:projects).where(projects: { id: project_id }))
+    else
+      ransack_samples
+    end
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -32,20 +36,17 @@ class SamplesController < ApplicationController
     @table_name = if params[:display] == 'sequencing_products'
                     q = SequencingProduct
                       .where(sample_id: @sample.id)
-                      .ransack(params[:q])
                     ransack_sequence_products(base_query: q)
                     'samples/sample_sequencing_products'
                   elsif params[:display] == 'pipeline_outputs'
                     q = PipelineOutput
                         .joins(sequencing_products: [:sample])
                         .where(sequencing_products: { samples: { id:  @sample.id }})
-                        .ransack(params[:q])
                     ransack_pipeline_outputs(base_query: q)
                     'samples/sample_pipeline_outputs'
                   else
                     q = Project.joins(:samples)
                       .where(samples: { id: @sample.id  })
-                      .ransack(params[:q])
                     ransack_projects(base_query: q)
                     'samples/sample_projects'
                   end

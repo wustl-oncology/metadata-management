@@ -5,7 +5,11 @@ class SequencingProductsController < ApplicationController
   before_action :set_sequencing_product, only: [:show]
 
   def index
-    ransack_sequence_products
+    if (project_id = params.dig(:q, :project_id))
+      ransack_sequence_products(base_query: SequencingProduct.joins(sample: [:projects]).where(projects: { id: project_id }))
+    else
+      ransack_sequence_products
+    end
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -38,13 +42,11 @@ class SequencingProductsController < ApplicationController
                     q = PipelineOutput
                       .joins(:sequencing_products)
                       .where(sequencing_products: { id:  @sp.id })
-                      .ransack(params[:q])
                     ransack_pipeline_outputs(base_query: q)
                     'sequencing_products/sequencing_products_pipeline_outputs'
                   else
                     q = Project.joins(:samples)
                       .where(samples: { id: @sp.id  })
-                      .ransack(params[:q])
                     ransack_projects(base_query: q)
                     'sequencing_products/sequencing_products_projects'
                   end

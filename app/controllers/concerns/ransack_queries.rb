@@ -2,11 +2,11 @@ module RansackQueries
   extend ActiveSupport::Concern
 
   def ransack_samples(base_query: nil)
-    if base_query.present?
-      @q = base_query
+    @q = if base_query
+      base_query
     else
-      @q = Sample.ransack(params[:q])
-    end
+      Sample
+    end.ransack(params[:q])
 
     @scope = @q.result(distinct: true).includes(:tags).select(
       :id,
@@ -25,11 +25,11 @@ module RansackQueries
   end
 
   def ransack_sequence_products(base_query: nil)
-    if base_query.present?
-      @q = base_query
+    @q = if base_query
+      base_query
     else
-      @q = SequencingProduct.ransack(params[:q])
-    end
+      SequencingProduct
+    end.ransack(params[:q])
 
     @scope = @q.result(distinct: true).eager_load(:tags, :sample).select(
       :id,
@@ -54,11 +54,11 @@ module RansackQueries
   end
 
   def ransack_pipeline_outputs(base_query: nil)
-    if base_query.present?
-      @q = base_query
+    @q = if base_query
+      base_query
     else
-      @q = PipelineOutput.ransack(params[:q])
-    end
+      PipelineOutput
+    end.ransack(params[:q])
 
     @scope = @q.result(distinct: true)
       .includes(:tags, :project, :user, :sequencing_products)
@@ -81,11 +81,11 @@ module RansackQueries
   end
 
   def ransack_projects(base_query: nil)
-    if base_query.present?
-      @q = base_query
+    @q = if base_query
+      base_query
     else
-      @q = Project.ransack(params[:q])
-    end
+      Project
+    end.ransack(params[:q])
 
     @scope = @q.result(distinct: true)
       .includes(:tags, :user)
