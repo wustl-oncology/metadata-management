@@ -34,3 +34,12 @@ turbo-frame[busy] .turbo-loading {
   border-radius: 6px;
   border: 1px solid  hsl(0, 0%, 71%);
 }
+
+.browse-table {
+  width: 85%;
+  overflow-x: auto;
+}
+
+.filters {
+  margin-top: 25px;
+}

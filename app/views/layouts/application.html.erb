@@ -16,12 +16,10 @@
       <div class="column is-narrow">
         <%= render 'shared/sidebar' %>
       </div>
-      <div class="animate-slide-in">
-        <section class="section">
+      <div class="column animate-slide-in">
           <%= turbo_frame_tag :main_content do %>
             <%= yield %>
           <% end %>
-        </section>
       </div>
     </div>
     <%= turbo_frame_tag :modal %>

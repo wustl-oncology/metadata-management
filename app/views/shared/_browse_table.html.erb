@@ -1,34 +1,37 @@
 <%# locals: (filter_partial:, header_partial:, body_partial:, selected_item_id:, collection:  ) -%>
 
-
-<%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
-  <div class="field is-grouped is-grouped-centered">
-    <%= render partial: filter_partial, locals: { form: f }  %>
-    <% if @project %>
-      <%= f.hidden_field :project_id, value: @project.id %>
+<div class="browse-table">
+  <div class="filters">
+    <%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
+      <div class="field is-grouped is-grouped-centered">
+        <%= render partial: filter_partial, locals: { form: f, expanded: @expanded }  %>
+        <% if @project %>
+          <%= f.hidden_field :project_id, value: @project.id %>
+        <% end %>
+      </div>
     <% end %>
   </div>
-<% end %>
 
-<%= turbo_frame_tag 'table' do %>
-  <%= render 'shared/loader' %>
-  <div class="field is-grouped is-grouped-right">
-    <%= link_to @tsv_path, class: 'button is-small', data: { turbo: false } do %>
-      <span class="icon is-small"><%= octicon "download", :height => 24 %></span>
-      <span>Export Table</span>
-    <% end %>
-  </div>
-  <table class="table is-bordered is-striped is-hoverable is-fullwidth">
-    <thead>
-      <tr>
-        <%= render partial: header_partial, locals: { query: @q }  %>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render partial: body_partial, locals: { collection: collection } %>
-    </tbody>
-  </table>
-  <%== pagy_bulma_nav(@pagy) %>
-<% end %>
+  <%= turbo_frame_tag 'table' do %>
+    <%= render 'shared/loader' %>
+    <div class="field is-grouped is-grouped-right">
+      <%= link_to @tsv_path, class: 'button is-small', data: { turbo: false } do %>
+        <span class="icon is-small"><%= octicon "download", :height => 24 %></span>
+        <span>Export Table</span>
+      <% end %>
+    </div>
+    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <%= render partial: header_partial, locals: { query: @q, expanded: @expanded }  %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: body_partial, locals: { collection: collection, expanded: @expanded } %>
+      </tbody>
+    </table>
+    <%== pagy_bulma_nav(@pagy) %>
+  <% end %>
 
-<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: selected_item_id } %>
+  <%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: selected_item_id } %>
+</div>
