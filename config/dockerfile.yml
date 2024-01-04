@@ -4,6 +4,7 @@
 options:
   jemalloc: true
   nginx: true
+  platform: linux/amd64
   postgresql: true
   yjit: true
   packages:
