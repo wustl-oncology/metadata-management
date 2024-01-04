@@ -29,6 +29,7 @@ module MetadataManagement
     config.autoload_lib(ignore: %w(assets tasks))
 
     config.active_record.encryption.support_unencrypted_data = true
+    config.action_dispatch.rescue_responses["Pundit::NotAuthorizedError"] = :forbidden
 
     # Configuration for the application, engines, and railties goes here.
     #

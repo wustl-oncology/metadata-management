@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   skip_before_action :ensure_signed_in, only: [:create]
   skip_after_action :verify_authorized
+  skip_after_action :verify_policy_scoped
 
   def create
     auth_hash = request.env['omniauth.auth']

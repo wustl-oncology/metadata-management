@@ -5,11 +5,13 @@ class PipelineOutputsController < ApplicationController
   before_action :set_pipeline_output, only: [:show]
 
   def index
-    if (project_id = params.dig(:q, :project_id))
-      ransack_pipeline_outputs(base_query: PipelineOutput.where(project_id: project_id))
-    else
-      ransack_pipeline_outputs
-    end
+    base_query = if (project_id = params.dig(:q, :project_id))
+                   PipelineOutput.where(project_id: project_id)
+                 else
+                   PipelineOutput
+                 end
+
+    ransack_pipeline_outputs(base_query: policy_scope(base_query))
 
     respond_to do |format|
       format.html
@@ -19,6 +21,7 @@ class PipelineOutputsController < ApplicationController
   end
 
   def show
+    authorize @po
     setup_table_queries
     @attrs = [
       ['Pipeline Name', @po.pipeline_name],
@@ -42,12 +45,12 @@ class PipelineOutputsController < ApplicationController
                     q = SequencingProduct
                       .joins(:pipeline_outputs)
                       .where(pipeline_outputs: { id: @po.id })
-                    ransack_sequence_products(base_query: q)
+                    ransack_sequence_products(base_query: policy_scope(q))
                     'pipeline_outputs/pipeline_outputs_sequencing_products'
                   else
                     q = Sample.joins(sequencing_products: [:pipeline_outputs])
                       .where(sequencing_products: { pipeline_outputs: { id: @po.id  }})
-                    ransack_samples(base_query: q)
+                    ransack_samples(base_query: policy_scope(q))
                     'pipeline_outputs/pipeline_outputs_samples'
                   end
   end

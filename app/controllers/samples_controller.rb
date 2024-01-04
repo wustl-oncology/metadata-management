@@ -5,11 +5,15 @@ class SamplesController < ApplicationController
   before_action :set_sample, only: [:show]
 
   def index
-    if (project_id = params.dig(:q, :project_id))
-      ransack_samples(base_query: Sample.joins(:projects).where(projects: { id: project_id }))
-    else
-      ransack_samples
-    end
+    base_query = if (project_id = params.dig(:q, :project_id))
+                   Sample.joins(:projects)
+                     .where(projects: { id: project_id })
+                 else
+                   Sample
+                 end
+
+    ransack_samples(base_query: policy_scope(base_query))
+
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -18,6 +22,7 @@ class SamplesController < ApplicationController
   end
 
   def show
+    authorize @sample
     setup_table_queries
     @attrs = [
       ['Species', @sample.species],
@@ -33,21 +38,22 @@ class SamplesController < ApplicationController
   end
 
   def setup_table_queries
-    @table_name = if params[:display] == 'sequencing_products'
+    display_mode = params.permit(:display)[:display]
+    @table_name = if display_mode == 'sequencing_products'
                     q = SequencingProduct
                       .where(sample_id: @sample.id)
-                    ransack_sequence_products(base_query: q)
+                    ransack_sequence_products(base_query: policy_scope(q))
                     'samples/sample_sequencing_products'
-                  elsif params[:display] == 'pipeline_outputs'
+                  elsif display_mode == 'pipeline_outputs'
                     q = PipelineOutput
                         .joins(sequencing_products: [:sample])
                         .where(sequencing_products: { samples: { id:  @sample.id }})
-                    ransack_pipeline_outputs(base_query: q)
+                    ransack_pipeline_outputs(base_query: policy_scope(q))
                     'samples/sample_pipeline_outputs'
                   else
                     q = Project.joins(:samples)
                       .where(samples: { id: @sample.id  })
-                    ransack_projects(base_query: q)
+                    ransack_projects(base_query: policy_scope(q))
                     'samples/sample_projects'
                   end
   end

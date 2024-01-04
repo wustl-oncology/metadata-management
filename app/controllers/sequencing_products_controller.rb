@@ -5,11 +5,14 @@ class SequencingProductsController < ApplicationController
   before_action :set_sequencing_product, only: [:show]
 
   def index
-    if (project_id = params.dig(:q, :project_id))
-      ransack_sequence_products(base_query: SequencingProduct.joins(sample: [:projects]).where(projects: { id: project_id }))
-    else
-      ransack_sequence_products
-    end
+    base_query = if (project_id = params.dig(:q, :project_id))
+                   SequencingProduct.joins(sample: [:projects])
+                     .where(projects: { id: project_id })
+                 else
+                   SequencingProduct end
+
+    ransack_sequence_products(base_query: policy_scope(base_query))
+
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -18,6 +21,7 @@ class SequencingProductsController < ApplicationController
   end
 
   def show
+    authorize @sp
     setup_table_queries
     @attrs = [
       ['Sample', helpers.link_to(@sp.sample.name, helpers.sample_path(@sp.sample), data: {turbo_frame: :_top})],
@@ -38,16 +42,16 @@ class SequencingProductsController < ApplicationController
   end
 
   def setup_table_queries
-    @table_name = if params[:display] == 'pipeline_outputs'
+    @table_name = if params.permit(:display)[:display] == 'pipeline_outputs'
                     q = PipelineOutput
                       .joins(:sequencing_products)
                       .where(sequencing_products: { id:  @sp.id })
-                    ransack_pipeline_outputs(base_query: q)
+                    ransack_pipeline_outputs(base_query: policy_scope(q))
                     'sequencing_products/sequencing_products_pipeline_outputs'
                   else
                     q = Project.joins(:samples)
-                      .where(samples: { id: @sp.id  })
-                    ransack_projects(base_query: q)
+                      .where(samples: { id: @sp.sample_id  })
+                    ransack_projects(base_query: policy_scope(q))
                     'sequencing_products/sequencing_products_projects'
                   end
   end

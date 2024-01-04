@@ -5,9 +5,12 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update]
 
   def index
-    @q = Project.ransack(params[:q])
 
-    scope = @q.result(distinct: true).includes(:tags, :lab).select(:id, :name, :notes, :lab_id)
+    @q = policy_scope(Project).ransack(params[:q])
+
+    scope = @q.result(distinct: true)
+      .includes(:tags, :lab)
+      .select(:id, :name, :notes, :lab_id)
 
     @pagy, @projects = pagy(
       scope,
@@ -22,6 +25,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    authorize @project
     setup_table_queries
   end
 
@@ -72,17 +76,17 @@ class ProjectsController < ApplicationController
                     q = SequencingProduct
                       .joins(sample: [:projects])
                       .where(samples: { projects: { id: @project.id }})
-                    ransack_sequence_products(base_query: q)
+                    ransack_sequence_products(base_query: policy_scope(q))
                     'projects/project_sequencing_products'
                   elsif params[:display] == 'pipeline_outputs'
                     q = PipelineOutput
                         .where(project_id: @project.id)
-                    ransack_pipeline_outputs(base_query: q)
+                    ransack_pipeline_outputs(base_query: policy_scope(q))
                     'projects/project_pipeline_outputs'
                   else
                     q = Sample.joins(:projects)
                       .where(projects: { id: @project.id  })
-                    ransack_samples(base_query: q)
+                    ransack_samples(base_query: policy_scope(q))
                     'projects/project_samples'
                   end
   end
