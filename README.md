@@ -2,7 +2,7 @@
 
 ```
 brew install postgresql redis rbenv ruby-build
-rbenv install 3.2.2
+rbenv install 3.3.0
 cd metadata-management/
 bundle install
 bin/rails db:prepare
