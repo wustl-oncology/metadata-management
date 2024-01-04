@@ -1,4 +1,4 @@
-<%# locals: (collection:) -%>
+<%# locals: (collection:, expanded:) -%>
 
 <% collection.each do |sample| %>
   <%= tag.tr id: dom_id(sample) do %>
@@ -12,12 +12,6 @@
       <%= sample.disease_status %>
     </td>
     <td>
-      <%= sample.individual %>
-    </td>
-    <td>
-      <%= sample.timepoint %>
-    </td>
-    <td>
       <%= link_to preview_note_path(subject: 'sample', id: sample.id), data: { turbo_frame: :modal } do %>
         <%= octicon "note", :height => 24 %>
       <% end %>
@@ -25,5 +19,13 @@
     <td>
       <%= render partial: 'tags/tag_list', locals: { tags: sample.tags } %>
     </td>
+    <% if expanded %>
+      <td>
+        <%= sample.individual %>
+      </td>
+      <td>
+        <%= sample.timepoint %>
+      </td>
+    <% end %>
   <% end %>
 <% end %>

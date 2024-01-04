@@ -1,0 +1,7 @@
+<%# locals: (expanded: false) %>
+<div class="field is-grouped is-grouped-centered is-grouped-multiline">
+  <%= yield :default_filters %>
+  <% if expanded %>
+    <%= yield :expanded_filters %>
+  <% end %>
+</div>

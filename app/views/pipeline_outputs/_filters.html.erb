@@ -1,23 +1,28 @@
 <%# locals: (form:) -%>
-<div class="select mr-3">
-  <%= form.select :platform_eq, options_for_select(PipelineOutput.distinct.pluck(:platform),  @q.platform_eq), {  prompt: 'Platform' }, data: { action: "debounce#submit" } %>
-</div>
-<div class="control is-expanded">
-  <%= form.search_field :pipeline_name_cont, placeholder: 'Pipeline', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :pipeline_version_cont, placeholder: 'Pipeline Version', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :platform_identifier_cont, placeholder: 'Platform ID', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :data_location_cont, placeholder: 'Data Location', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :sequencing_products_unaligned_data_path_cont, placeholder: 'Sequence Products', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="select">
-  <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
-</div>
+<%= content_for :default_filters do %>
+  <div class="control select mr-3">
+    <%= form.select :platform_eq, options_for_select(PipelineOutput.distinct.pluck(:platform),  @q.platform_eq), {  prompt: 'Platform' }, data: { action: "debounce#submit" } %>
+  </div>
+  <div class="control is-expanded">
+    <%= form.search_field :pipeline_name_cont, placeholder: 'Pipeline', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control">
+    <%= form.search_field :pipeline_version_cont, placeholder: 'Pipeline Version', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control">
+    <%= form.search_field :platform_identifier_cont, placeholder: 'Platform ID', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control">
+    <%= form.search_field :data_location_cont, placeholder: 'Data Location', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control select">
+    <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
+  </div>
+<% end %>
+
+<%= content_for :expanded_filters do %>
+  <div class="control">
+    <%= form.search_field :sequencing_products_unaligned_data_path_cont, placeholder: 'Sequence Products', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+<% end %>
 

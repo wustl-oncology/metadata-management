@@ -36,7 +36,7 @@ turbo-frame[busy] .turbo-loading {
 }
 
 .browse-table {
-  width: 85%;
+  margin-right: 25px;
   overflow-x: auto;
 }
 

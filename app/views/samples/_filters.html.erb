@@ -1,20 +1,26 @@
 <%# locals: (form:) -%>
-<div class="control is-expanded">
-  <%= form.search_field :name_cont, placeholder: 'Name', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="select">
-  <%= form.select :disease_status_eq, options_for_select(Sample.distinct.pluck(:disease_status), @q.disease_status_eq), { prompt: 'Disease Status' }, data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :individual_cont, placeholder: 'Individual', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :timepoint_cont, placeholder: 'Timepoint', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="select">
-  <%= form.select :species_eq, options_for_select(Sample.distinct.pluck(:species),  @q.species_eq), {  prompt: 'Species' }, data: { action: "debounce#submit" } %>
-</div>
-<div class="select">
-  <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
-</div>
+
+<%= content_for :default_filters do %>
+  <div class="control is-expanded">
+    <%= form.search_field :name_cont, placeholder: 'Name', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control select">
+    <%= form.select :species_eq, options_for_select(Sample.distinct.pluck(:species),  @q.species_eq), {  prompt: 'Species' }, data: { action: "debounce#submit" } %>
+  </div>
+  <div class="control select">
+    <%= form.select :disease_status_eq, options_for_select(Sample.distinct.pluck(:disease_status), @q.disease_status_eq), { prompt: 'Disease Status' }, data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control select">
+    <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
+  </div>
+<% end %>
+
+<%= content_for :expanded_filters do %>
+  <div class="control">
+    <%= form.search_field :individual_cont, placeholder: 'Individual', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control">
+    <%= form.search_field :timepoint_cont, placeholder: 'Timepoint', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+<% end %>
 

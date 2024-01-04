@@ -1,10 +1,12 @@
-<%# locals: (query:) -%>
+<%# locals: (query:, expanded:) -%>
 <tr>
   <th><%= sort_link(query, :name) %></th>
   <th><%= sort_link(query, :species) %></th>
   <th><%= sort_link(query, :disease_status) %></th>
-  <th><%= sort_link(query, :individual) %></th>
-  <th><%= sort_link(query, :timepoint) %></th>
   <th>Notes</th>
   <th>Tags</th>
+  <% if expanded %>
+    <th><%= sort_link(query, :individual) %></th>
+    <th><%= sort_link(query, :timepoint) %></th>
+  <% end %>
 </tr>

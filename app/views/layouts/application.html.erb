@@ -16,7 +16,7 @@
       <div class="column is-narrow">
         <%= render 'shared/sidebar' %>
       </div>
-      <div class="column animate-slide-in">
+      <div class="column">
           <%= turbo_frame_tag :main_content do %>
             <%= yield %>
           <% end %>

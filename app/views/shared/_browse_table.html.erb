@@ -1,37 +1,51 @@
 <%# locals: (filter_partial:, header_partial:, body_partial:, selected_item_id:, collection:  ) -%>
 
-<div class="browse-table">
-  <div class="filters">
-    <%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
-      <div class="field is-grouped is-grouped-centered">
-        <%= render partial: filter_partial, locals: { form: f, expanded: @expanded }  %>
+<%= turbo_frame_tag :table_with_filters do %>
+  <div class="browse-table">
+    <div class="filters">
+      <%= search_form_for @q, html: { data: { controller: 'debounce', turbo_frame: 'table' } } do |f| %>
+        <%= render partial: filter_partial, locals: { form: f }  %>
+        <%= render partial: 'shared/table_filter_row', locals: { expanded: @expanded } %>
         <% if @project %>
           <%= f.hidden_field :project_id, value: @project.id %>
         <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <%= turbo_frame_tag 'table' do %>
-    <%= render 'shared/loader' %>
-    <div class="field is-grouped is-grouped-right">
-      <%= link_to @tsv_path, class: 'button is-small', data: { turbo: false } do %>
-        <span class="icon is-small"><%= octicon "download", :height => 24 %></span>
-        <span>Export Table</span>
       <% end %>
     </div>
-    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
-      <thead>
-        <tr>
-          <%= render partial: header_partial, locals: { query: @q, expanded: @expanded }  %>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render partial: body_partial, locals: { collection: collection, expanded: @expanded } %>
-      </tbody>
-    </table>
-    <%== pagy_bulma_nav(@pagy) %>
-  <% end %>
 
-  <%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: selected_item_id } %>
-</div>
+    <%= turbo_frame_tag 'table' do %>
+      <%= render 'shared/loader' %>
+      <div class="field is-grouped is-grouped-right">
+        <% if show_expand_controls? %>
+          <% if @expanded %>
+            <%= link_to expand_toggle_path(@expanded), class: 'control button is-small', data: { turbo_frame: 'table_with_filters' } do %>
+              <span class="icon is-small"><%= octicon "fold", :height => 24 %></span>
+              <span>Collapse</span>
+            <% end %>
+          <% else %>
+            <%= link_to expand_toggle_path(@expanded), class: 'control button is-small', data: { turbo_frame: 'table_with_filters' } do %>
+              <span class="icon is-small"><%= octicon "unfold", :height => 24 %></span>
+              <span>Expand</span>
+            <% end %>
+          <% end %>
+        <% end %>
+        <%= link_to @tsv_path, class: 'control button is-small', data: { turbo: false } do %>
+          <span class="icon is-small"><%= octicon "download", :height => 24 %></span>
+          <span>Export Table</span>
+        <% end %>
+      </div>
+      <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <%= render partial: header_partial, locals: { query: @q, expanded: @expanded }  %>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render partial: body_partial, locals: { collection: collection, expanded: @expanded } %>
+        </tbody>
+      </table>
+      <%== pagy_bulma_nav(@pagy) %>
+    <% end %>
+
+  </div>
+<% end %>
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: selected_item_id } %>

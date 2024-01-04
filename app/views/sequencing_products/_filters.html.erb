@@ -1,21 +1,24 @@
-<%# locals: (form:, expanded: false) -%>
-<div class="control is-expanded">
-  <%= form.search_field :sample_name_cont, placeholder: 'Sample', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control select">
-  <%= form.select :library_prep_eq, options_for_select(SequencingProduct.distinct.pluck(:library_prep), @q.library_prep_eq), { prompt: 'Library Prep'}, data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :flow_cell_id_cont, placeholder: 'Flow Cell', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control">
-  <%= form.search_field :unaligned_data_path_cont, placeholder: 'Data Path', class: 'input', data: { action: 'debounce#submit' }  %>
-</div>
-<div class="control select">
-  <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
-</div>
+<%# locals: (form:) -%>
 
-<% if expanded %>
+<%= content_for :default_filters do %>
+  <div class="control is-expanded">
+    <%= form.search_field :sample_name_cont, placeholder: 'Sample', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control select">
+    <%= form.select :library_prep_eq, options_for_select(SequencingProduct.distinct.pluck(:library_prep), @q.library_prep_eq), { prompt: 'Library Prep'}, data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control">
+    <%= form.search_field :flow_cell_id_cont, placeholder: 'Flow Cell', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control">
+    <%= form.search_field :unaligned_data_path_cont, placeholder: 'Data Path', class: 'input', data: { action: 'debounce#submit' }  %>
+  </div>
+  <div class="control select">
+    <%= form.select :tags_tag_eq, options_for_select(Tag.pluck(:tag),  @q.tags_tag_eq), {  prompt: 'Tag' }, data: { action: "debounce#submit" } %>
+  </div>
+<% end %>
+
+<%= content_for :expanded_filters do %>
   <div class="control">
     <%= form.search_field :instrument_cont, placeholder: 'Instrument', class: 'input', data: { action: 'debounce#submit' }  %>
   </div>

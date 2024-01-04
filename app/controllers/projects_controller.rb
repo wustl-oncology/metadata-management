@@ -86,4 +86,12 @@ class ProjectsController < ApplicationController
                     'projects/project_samples'
                   end
   end
+
+  def show_expand_controls?
+    if params[:action] == 'index'
+      false
+    else
+      true
+    end
+  end
 end
