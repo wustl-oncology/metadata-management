@@ -43,3 +43,8 @@ turbo-frame[busy] .turbo-loading {
 .filters {
   margin-top: 25px;
 }
+
+.content {
+  margin-right: 25px;
+  margin-top: 25px;
+}

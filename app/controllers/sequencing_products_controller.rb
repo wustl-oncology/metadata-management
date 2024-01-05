@@ -2,7 +2,7 @@ class SequencingProductsController < ApplicationController
   include RansackQueries
   include TableDownloader
 
-  before_action :set_sequencing_product, only: [:show]
+  before_action :set_sequencing_product, only: [:show, :edit, :update]
 
   def index
     base_query = if (project_id = params.dig(:q, :project_id))
@@ -36,7 +36,35 @@ class SequencingProductsController < ApplicationController
     ]
   end
 
+  def edit
+    authorize @sp
+  end
+
+  def update
+    authorize @sp
+
+    if @sp.update(sp_params)
+      redirect_to @sp
+    else
+      render :edit
+    end
+  end
+
   private
+  def sp_params
+    params.require(:sequencing_product).permit(
+      :library_prep,
+      :flow_cell_id,
+      :unaligned_data_path,
+      :strand,
+      :kit,
+      :targeted_capture,
+      :paired_end,
+      :batch,
+      :notes
+    )
+  end
+
   def set_sequencing_product
     @sp = SequencingProduct.includes(:tags,:sample).find(params.permit(:id)[:id])
   end

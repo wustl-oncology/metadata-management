@@ -30,6 +30,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    @labs = LabMembership.where(user: current_user, permissions: 'write').includes(:lab).map(&:lab)
     authorize @project
   end
 

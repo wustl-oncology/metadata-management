@@ -2,7 +2,7 @@ class SamplesController < ApplicationController
   include RansackQueries
   include TableDownloader
 
-  before_action :set_sample, only: [:show]
+  before_action :set_sample, only: [:show, :edit, :update]
 
   def index
     base_query = if (project_id = params.dig(:q, :project_id))
@@ -32,7 +32,32 @@ class SamplesController < ApplicationController
     ]
   end
 
+  def edit
+    authorize @sample
+  end
+
+  def update
+    authorize @sample
+
+    if @sample.update(sample_params)
+      redirect_to @sample
+    else
+      render :edit
+    end
+  end
+
   private
+  def sample_params
+    params.require(:sample).permit(
+      :name,
+      :species,
+      :individual,
+      :timepoint,
+      :disease_status,
+      :notes
+    )
+  end
+
   def set_sample
     @sample = Sample.includes(:tags).find(params.permit(:id)[:id])
   end

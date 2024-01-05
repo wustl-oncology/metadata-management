@@ -4,6 +4,8 @@ class Sample < ApplicationRecord
   has_and_belongs_to_many :projects
   has_many :sequencing_products
 
+  validates :name, presence: true, uniqueness: true
+
   def self.ransackable_attributes(auth_object = nil)
     ["name", "species", "tags", "disease_status", "individual", "timepoint", "created_at", "updated_at"]
   end

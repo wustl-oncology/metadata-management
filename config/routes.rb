@@ -7,9 +7,9 @@ Rails.application.routes.draw do
     resources :pipeline_outputs, only: [:index]
   end
 
-  resources :samples, only: [:index, :show]
-  resources :sequencing_products, only: [:index, :show]
-  resources :pipeline_outputs, only: [:index, :show]
+  resources :samples, only: [:index, :show, :edit, :update]
+  resources :sequencing_products, only: [:index, :show, :edit, :update]
+  resources :pipeline_outputs, only: [:index, :show, :edit, :update]
   post '/pipeline_outputs' => 'pipeline_outputs_api#create'
 
   resources :notes, only: [:index]

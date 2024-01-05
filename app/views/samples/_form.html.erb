@@ -1,42 +1,67 @@
-<%= form_with model: @project, class: "box" do |form| %>
-  <% if @project.errors.any? %>
+<%= form_with model: @sample, class: "box" do |form| %>
+  <% if @sample.errors.any? %>
     <div class="notification is-danger is-light">
       There was an issue submitting this form, please correct any errors and try again.
     </div>
   <% end %>
+
   <div class="field">
-    <%= form.label :name, 'Project Name', class: 'label' %>
+    <%= form.label :name, 'Sample Name', class: 'label' %>
     <div class="control">
-      <%= form.text_field :name, class: class_names('input', input_error_class(@project, :name)) %>
+      <%= form.text_field :name, class: class_names('input', input_error_class(@sample, :name)) %>
     </div>
-    <%= error_message(@project, :name) %>
+    <%= error_message(@sample, :name) %>
   </div>
 
   <div class="field">
-    <%= form.label :lab, 'Lab', class: 'label' %>
+    <%= form.label :species, 'Species', class: 'label' %>
     <div class="control">
-      <%= form.text_field :lab, class: class_names('input', input_error_class(@project, :lab)) %>
+      <%= form.text_field :species, class: class_names('input', input_error_class(@sample, :species)) %>
     </div>
-    <%= error_message(@project, :lab) %>
+    <%= error_message(@sample, :species) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :individual, 'Individual', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :individual, class: class_names('input', input_error_class(@sample, :individual)) %>
+    </div>
+    <%= error_message(@sample, :individual) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :timepoint, 'Timepoint', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :timepoint, class: class_names('input', input_error_class(@sample, :timepoint)) %>
+    </div>
+    <%= error_message(@sample, :timepoint) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :disease_status, 'Disease Status', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :disease_status, class: class_names('input', input_error_class(@sample, :disease_status)) %>
+    </div>
+    <%= error_message(@sample, :disease_status) %>
   </div>
 
   <div class="field">
     <%= form.label :notes, 'Notes', class: 'label' %>
     <div class="control">
-      <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@project, :notes)) %>
+      <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@sample, :notes)) %>
     </div>
-    <%= error_message(@project, :notes) %>
+    <%= error_message(@sample, :notes) %>
   </div>
 
   <div class="field ">
-    <% if @project.persisted? %>
-      <%= link_to "Cancel", project_path(@project), class: "button", data: { turbo_action: 'advance' } %>
+    <% if @sample.persisted? %>
+      <%= link_to "Cancel", sample_path(@sample), class: "button", data: { turbo_action: 'advance' } %>
     <% else %>
-      <%= link_to "Cancel", projects_path, class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+      <%= link_to "Cancel", samples_path, class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
     <% end %>
     <%= form.submit 'Submit', class: "button is-primary" %>
   </div>
 
 <% end %>
 
-<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'projects-menu-item' } %>
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'samples-menu-item' } %>

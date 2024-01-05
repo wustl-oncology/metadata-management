@@ -1,0 +1,91 @@
+<%= form_with model: @sp, class: "box" do |form| %>
+  <% if @sp.errors.any? %>
+    <div class="notification is-danger is-light">
+      There was an issue submitting this form, please correct any errors and try again.
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :library_prep, 'Library Prep', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :library_prep, class: class_names('input', input_error_class(@sp, :library_prep)) %>
+    </div>
+    <%= error_message(@sp, :library_prep) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :flow_cell_id, 'Flow Cell ID', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :flow_cell_id, class: class_names('input', input_error_class(@sp, :flow_cell_id)) %>
+    </div>
+    <%= error_message(@sp, :flow_cell_id) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :unaligned_data_path, 'Unaligned Data Path', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :unaligned_data_path, class: class_names('input', input_error_class(@sp, :unaligned_data_path)) %>
+    </div>
+    <%= error_message(@sp, :unaligned_data_path) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :strand, 'Strand', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :strand, class: class_names('input', input_error_class(@sp, :strand)) %>
+    </div>
+    <%= error_message(@sp, :strand) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :kit, 'Kit', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :kit, class: class_names('input', input_error_class(@sp, :kit)) %>
+    </div>
+    <%= error_message(@sp, :kit) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :targeted_capture, 'Targeted Capture', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :targeted_capture, class: class_names('input', input_error_class(@sp, :targeted_capture)) %>
+    </div>
+    <%= error_message(@sp, :targeted_capture) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :paired_end, 'Paired End', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :paired_end, class: class_names('input', input_error_class(@sp, :paired_end)) %>
+    </div>
+    <%= error_message(@sp, :paired_end) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :batch, 'Batch', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :batch, class: class_names('input', input_error_class(@sp, :batch)) %>
+    </div>
+    <%= error_message(@sp, :batch) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes, 'Notes', class: 'label' %>
+    <div class="control">
+      <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@sp, :notes)) %>
+    </div>
+    <%= error_message(@sp, :notes) %>
+  </div>
+
+  <div class="field ">
+    <% if @sp.persisted? %>
+      <%= link_to "Cancel", sequencing_product_path(@sp), class: "button", data: { turbo_action: 'advance' } %>
+    <% else %>
+      <%= link_to "Cancel", sequencing_products_path_path, class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+    <% end %>
+    <%= form.submit 'Submit', class: "button is-primary" %>
+  </div>
+
+<% end %>
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'sequencing-products-menu-item' } %>

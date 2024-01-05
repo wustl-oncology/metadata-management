@@ -1,0 +1,67 @@
+<%= form_with model: @po, class: "box" do |form| %>
+  <% if @po.errors.any? %>
+    <div class="notification is-danger is-light">
+      There was an issue submitting this form, please correct any errors and try again.
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :pipeline_name, 'Pipeline Name', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :pipeline_name, class: class_names('input', input_error_class(@po, :pipeline_name)) %>
+    </div>
+    <%= error_message(@po, :pipeline_name) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pipeline_version, 'Pipeline Version', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :pipeline_version, class: class_names('input', input_error_class(@po, :pipeline_version)) %>
+    </div>
+    <%= error_message(@po, :pipeline_version) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :platform, 'Platform', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :platform, class: class_names('input', input_error_class(@po, :platform)) %>
+    </div>
+    <%= error_message(@po, :platform) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :platform_identifier, 'Platform Identifier', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :platform_identifier, class: class_names('input', input_error_class(@po, :platform_identifier)) %>
+    </div>
+    <%= error_message(@po, :platform_identifier) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :data_location, 'Data Location', class: 'label' %>
+    <div class="control">
+      <%= form.text_field :data_location, class: class_names('input', input_error_class(@po, :data_location)) %>
+    </div>
+    <%= error_message(@po, :data_location) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notes, 'Notes', class: 'label' %>
+    <div class="control">
+      <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@po, :notes)) %>
+    </div>
+    <%= error_message(@po, :notes) %>
+  </div>
+
+  <div class="field ">
+    <% if @po.persisted? %>
+      <%= link_to "Cancel", pipeline_output_path(@po), class: "button", data: { turbo_action: 'advance' } %>
+    <% else %>
+      <%= link_to "Cancel", pipeline_outputs_path_path, class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+    <% end %>
+    <%= form.submit 'Submit', class: "button is-primary" %>
+  </div>
+
+<% end %>
+
+<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'pipeline-outputs-menu-item' } %>

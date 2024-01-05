@@ -2,7 +2,7 @@ class PipelineOutputsController < ApplicationController
   include RansackQueries
   include TableDownloader
 
-  before_action :set_pipeline_output, only: [:show]
+  before_action :set_pipeline_output, only: [:show, :edit, :update]
 
   def index
     base_query = if (project_id = params.dig(:q, :project_id))
@@ -34,7 +34,32 @@ class PipelineOutputsController < ApplicationController
     ]
   end
 
+  def edit
+    authorize @po
+  end
+
+  def update
+    authorize @po
+
+    if @po.update(po_params)
+      redirect_to @po
+    else
+      render :edit
+    end
+  end
+
   private
+  def po_params
+    params.require(:pipeline_output).permit(
+      :pipeline_name,
+      :pipeline_version,
+      :platform,
+      :platform_identifier,
+      :data_location,
+      :notes
+    )
+  end
+
   def set_pipeline_output
     @po = PipelineOutput.includes(:tags, :user, :project)
       .find(params.permit(:id)[:id])
