@@ -1,26 +1,28 @@
-<h1 class="title is-3">Upload Sample Information</h1>
-<h2 class="subtitle"><%= @project.name %></h3>
+<div class="content">
+  <h1 class="title is-3">Upload Sample Information</h1>
+  <h3 class="subtitle"><%= @project.name %></h3>
 
-<%= form_with url: project_uploads_path(@project), method: :post, class: 'box' do |form| %>
-  <div class="field">
-    <div class="control">
-      <span>
-        <a href="/sample-upload-template.tsv">Download</a> the template.
-      </span>
+  <%= form_with url: project_uploads_path(@project), method: :post, class: 'box' do |form| %>
+    <div class="field">
+      <div class="control">
+        <span>
+          <a href="/sample-upload-template.tsv">Download</a> the template.
+        </span>
+      </div>
     </div>
-  </div>
 
-  <div class="file is-boxed">
-    <label class="file-label">
-      <%= form.file_field :import, class: "file-input", onchange: "this.form.requestSubmit()" %>
-      <span class="file-cta">
-        <span class="file-icon">
-          <%= octicon "upload", :height => 24 %>
+    <div class="file is-boxed">
+      <label class="file-label">
+        <%= form.file_field :import, class: "file-input", onchange: "this.form.requestSubmit()" %>
+        <span class="file-cta">
+          <span class="file-icon">
+            <%= octicon "upload", :height => 24 %>
+          </span>
+          <span class="file-label">
+            Import Samples
+          </span>
         </span>
-        <span class="file-label">
-          Import Samples
-        </span>
-      </span>
-    </label>
-  </div>
-<% end %>
+      </label>
+    </div>
+  <% end %>
+</div>

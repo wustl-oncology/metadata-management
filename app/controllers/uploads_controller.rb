@@ -1,5 +1,6 @@
 class UploadsController < ApplicationController
   before_action :set_project
+  skip_after_action :verify_policy_scoped
 
   def new
     authorize @project, policy_class: UploadPolicy
