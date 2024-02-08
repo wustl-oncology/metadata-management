@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :uploads, only: [:new, :create, :show]
     resources :samples, only: [:index]
     resources :sequencing_products, only: [:index]
-    resources :pipeline_outputs, only: [:index]
+    resources :pipeline_outputs, only: [:index, :new, :create]
   end
 
   resources :samples, only: [:index, :show, :edit, :update]

@@ -48,6 +48,32 @@ class PipelineOutputsController < ApplicationController
     end
   end
 
+  def new
+    project_id = params.require(:project_id)
+    @project = Project.find(project_id)
+    authorize @project, :edit?
+
+    @po = PipelineOutput.new(project_id: project_id)
+  end
+
+  def create
+    project_id = params.require(:project_id)
+    @project = Project.find(project_id)
+    authorize @project, :edit?
+
+    @po = PipelineOutput.new(po_params.merge({
+      project_id: project_id,
+      user: current_user
+    }))
+
+    if @po.save
+      redirect_to @project
+    else
+      @frame_tag_override = :project
+      render :new
+    end
+  end
+
   private
   def po_params
     params.require(:pipeline_output).permit(

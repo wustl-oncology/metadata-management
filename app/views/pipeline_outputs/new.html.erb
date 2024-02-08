@@ -1,0 +1,6 @@
+<div class="content">
+  <%= turbo_frame_tag :project do %>
+    <%= render 'form', pipeline_output: @po, form_config: { url: project_pipeline_outputs_path, scope: :pipeline_output }  %>
+  <% end %>
+</div>
+

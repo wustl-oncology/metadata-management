@@ -1,4 +1,4 @@
-<%= form_with model: @po, class: "box" do |form| %>
+<%= form_with **form_config, class: "box" do |form| %>
   <% if @po.errors.any? %>
     <div class="notification is-danger is-light">
       There was an issue submitting this form, please correct any errors and try again.
@@ -57,11 +57,14 @@
     <% if @po.persisted? %>
       <%= link_to "Cancel", pipeline_output_path(@po), class: "button", data: { turbo_action: 'advance' } %>
     <% else %>
-      <%= link_to "Cancel", pipeline_outputs_path_path, class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+      <%= link_to "Cancel", project_path(@po.project), class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
     <% end %>
     <%= form.submit 'Submit', class: "button is-primary" %>
   </div>
 
 <% end %>
 
-<%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'pipeline-outputs-menu-item' } %>
+<% if @po.persisted? %>
+  <%= render partial: 'shared/sidebar_highlight', locals: { selected_item_id: 'pipeline-outputs-menu-item' } %>
+<% end %>
+

@@ -5,6 +5,8 @@ class PipelineOutput < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :sequencing_products
 
+  validates :data_location,:pipeline_name, :platform, presence: { message: 'is required' }
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "pipeline_name",
