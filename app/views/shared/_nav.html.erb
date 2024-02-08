@@ -9,12 +9,7 @@
   <div class="navbar-menu">
     <div class="navbar-end">
       <div class="navbar-item">
-        <p class="control has-icons-right">
-          <input class="input" type="text" placeholder="Search">
-          <span class="icon is-small is-right">
-            <%= octicon "search", :height => 16, class: 'reduced-opacity' %>
-          </span>
-        </p>
+        <%= render partial: 'search/searchbar' %>
       </div>
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">

@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_02_151528) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_08_154239) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -80,6 +81,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_02_151528) do
     t.bigint "user_id", null: false
     t.text "data_location", null: false
     t.text "notes"
+    t.index "to_tsvector('english'::regconfig, data_location)", name: "index_pipeline_outputs_on_to_tsvector_english_data_location", using: :gin
+    t.index ["data_location"], name: "idx_po_location_tri", opclass: :gist_trgm_ops, using: :gist
     t.index ["pipeline_name"], name: "index_pipeline_outputs_on_pipeline_name"
     t.index ["pipeline_version"], name: "index_pipeline_outputs_on_pipeline_version"
     t.index ["platform"], name: "index_pipeline_outputs_on_platform"
@@ -104,6 +107,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_02_151528) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.integer "lab_id"
+    t.index "to_tsvector('english'::regconfig, name)", name: "index_projects_on_to_tsvector_english_name", using: :gin
+    t.index ["name"], name: "idx_project_name_tri", opclass: :gist_trgm_ops, using: :gist
     t.index ["name"], name: "index_projects_on_name"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
@@ -122,8 +127,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_02_151528) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "notes"
+    t.index "to_tsvector('english'::regconfig, name)", name: "index_samples_on_to_tsvector_english_name", using: :gin
     t.index ["disease_status"], name: "index_samples_on_disease_status"
     t.index ["individual"], name: "index_samples_on_individual"
+    t.index ["name"], name: "idx_sample_name_tri", opclass: :gist_trgm_ops, using: :gist
     t.index ["name"], name: "index_samples_on_name"
     t.index ["species"], name: "index_samples_on_species"
     t.index ["timepoint"], name: "index_samples_on_timepoint"
@@ -143,9 +150,11 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_02_151528) do
     t.text "targeted_capture"
     t.text "paired_end"
     t.text "batch"
+    t.index "to_tsvector('english'::regconfig, unaligned_data_path)", name: "idx_on_to_tsvector_english_unaligned_data_path_16c108c372", using: :gin
     t.index ["flow_cell_id"], name: "index_sequencing_products_on_flow_cell_id"
     t.index ["instrument"], name: "index_sequencing_products_on_instrument"
     t.index ["sample_id"], name: "index_sequencing_products_on_sample_id"
+    t.index ["unaligned_data_path"], name: "idx_sp_data_path_tri", opclass: :gist_trgm_ops, using: :gist
     t.index ["unaligned_data_path"], name: "index_sequencing_products_on_unaligned_data_path"
   end
 

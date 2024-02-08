@@ -37,4 +37,8 @@ class SequencingProduct < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ['sample', 'tags']
   end
+
+  def display_name
+    unaligned_data_path
+  end
 end

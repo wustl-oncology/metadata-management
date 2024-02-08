@@ -1,0 +1,18 @@
+
+<%= turbo_frame_tag 'search-results' do %>
+  <% if @query.present? && @results && @results.size > 0 %>
+    <div class="dropdown-menu scale-in-ver-top search-results">
+      <div class="dropdown-content">
+        <% @results.each do |res| %>
+          <%= link_to search_result_url(res), class: "dropdown-item", data: { turbo_action: 'advance', turbo_frame: '_top' }  do %>
+            <span <%= tag.attributes(class: ["tag", search_tag_class(res) ]) %>>
+              <%= res.class.to_s %>
+            </span>
+            &nbsp;
+            <%= res.display_name %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

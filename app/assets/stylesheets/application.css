@@ -48,3 +48,15 @@ turbo-frame[busy] .turbo-loading {
   margin-right: 25px;
   margin-top: 25px;
 }
+
+.search-results {
+  max-width: 150%;
+}
+
+.dropdown-content {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+

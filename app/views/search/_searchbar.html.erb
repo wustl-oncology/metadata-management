@@ -1,0 +1,11 @@
+<div class="dropdown is-active">
+  <%= form_with url: '/search', method: :post, html: { data: { controller: "debounce", turbo_frame: "search-results" } } do |_| %>
+  <p class="control has-icons-right dropdown-trigger">
+    <input class="input" name="query" type="search" placeholder="Search" data-action="debounce#submit">
+  <span class="icon is-small is-right">
+    <%= octicon "search", :height => 16, class: 'reduced-opacity' %>
+  </span>
+  </p>
+  <% end %>
+  <%= render partial: 'search/search_results' %>
+</div>

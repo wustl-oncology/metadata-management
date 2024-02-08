@@ -23,4 +23,8 @@ class Sample < ApplicationRecord
       disease_status: row['Disease Status']
     )
   end
+
+  def display_name
+    name
+  end
 end

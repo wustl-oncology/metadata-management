@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resources :pipeline_outputs, only: [:index, :show, :edit, :update]
   post '/pipeline_outputs' => 'pipeline_outputs_api#create'
 
+  post '/search' => 'search#index'
+
   resources :notes, only: [:index]
   resources :users, only: [:show]
   post '/refresh_token' => 'users#refresh_token'

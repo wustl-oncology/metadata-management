@@ -30,4 +30,32 @@ module ApplicationHelper
     first = (len/2.0).ceil
     [array.take(first), array.drop(first)]
   end
+
+  def search_tag_class(elem)
+    res = case elem
+    when Sample
+      "is-link"
+    when Project
+      "is-primary"
+    when SequencingProduct
+      "is-warning"
+    when PipelineOutput
+      "is-danger"
+    end
+
+    "#{res} is-light"
+  end
+
+  def search_result_url(elem)
+    case elem
+    when Sample
+      sample_path(elem)
+    when Project
+      project_path(elem)
+    when SequencingProduct
+      sequencing_product_path(elem)
+    when PipelineOutput
+      pipeline_output_path(elem)
+    end
+  end
 end

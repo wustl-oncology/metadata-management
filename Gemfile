@@ -23,6 +23,7 @@ gem 'json-schema'
 gem 'pundit'
 gem 'trestle'
 gem 'requestjs-rails'
+gem 'textacular'
 
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-github', '~> 2.0.1'

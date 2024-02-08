@@ -23,4 +23,8 @@ class PipelineOutput < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ['sequencing_products', 'tags', 'project', 'user']
   end
+
+  def display_name
+    data_location
+  end
 end
