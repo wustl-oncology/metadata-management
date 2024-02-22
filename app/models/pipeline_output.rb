@@ -5,7 +5,11 @@ class PipelineOutput < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :sequencing_products
 
-  validates :data_location,:pipeline_name, :platform, presence: { message: 'is required' }
+  validates :data_location, :pipeline_name, :platform, :platform_identifier, presence: { message: 'is required' }
+  validates :platform, inclusion: PlatformConstraints::PLATFORMS
+  validates_with PipelineOutputValidator
+
+  attribute :run_completed_at, :datetime, default: -> { Time.now }
 
   def self.ransackable_attributes(auth_object = nil)
     [

@@ -8,6 +8,8 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= content_for :head %>
+    <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
   </head>
 
   <body>

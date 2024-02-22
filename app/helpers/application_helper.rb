@@ -1,17 +1,18 @@
 module ApplicationHelper
   include Pagy::Frontend
 
-  def input_error_class(model, field)
-    if model.errors.include?(field)
+  def input_error_class(model, field, submit_attempt = true)
+    if submit_attempt && model.errors.include?(field)
       'is-danger'
     else
       ''
     end
   end
 
-  def error_message(model, field)
+  def error_message(model, field, submit_attempt = true)
+    type = submit_attempt ? 'is-danger' : 'is-info'
     if model.errors.include?(field)
-      tag.p(model.errors.full_messages_for(field).join(','), class: 'help is-danger')
+      tag.p(model.errors.full_messages_for(field).join(', '), class: "help #{type}")
     else
       nil
     end
@@ -56,6 +57,12 @@ module ApplicationHelper
       sequencing_product_path(elem)
     when PipelineOutput
       pipeline_output_path(elem)
+    end
+  end
+
+  def maybe_disabled(condition)
+    tag.fieldset(disabled: condition) do
+      yield
     end
   end
 end

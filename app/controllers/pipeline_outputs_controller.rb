@@ -36,10 +36,15 @@ class PipelineOutputsController < ApplicationController
 
   def edit
     authorize @po
+    @po.assign_attributes(new_po_params)
+    @po.validate
+    @platforms = PlatformConstraints::PLATFORMS
+    @pipelines = PlatformConstraints.pipelines_for(platform: @po.platform)
   end
 
   def update
-    authorize @po
+    edit
+    @submit_attempt = true
 
     if @po.update(po_params)
       redirect_to @po
@@ -51,9 +56,21 @@ class PipelineOutputsController < ApplicationController
   def new
     project_id = params.require(:project_id)
     @project = Project.find(project_id)
+    @platforms = PlatformConstraints::PLATFORMS
+
     authorize @project, :edit?
 
-    @po = PipelineOutput.new(project_id: project_id)
+    @po = PipelineOutput.new(new_po_params.merge({
+      project_id: project_id,
+      user: current_user
+    }))
+
+    @pipelines = PlatformConstraints.pipelines_for(platform: @po.platform)
+
+    if params[:is_refresh]
+      @po.validate
+    end
+
   end
 
   def create
@@ -66,10 +83,14 @@ class PipelineOutputsController < ApplicationController
       user: current_user
     }))
 
+    @submit_attempt = true
+
     if @po.save
       redirect_to @project
     else
       @frame_tag_override = :project
+      @platforms = PlatformConstraints::PLATFORMS
+      @pipelines = PlatformConstraints.pipelines_for(platform: @po.platform)
       render :new
     end
   end
@@ -82,13 +103,27 @@ class PipelineOutputsController < ApplicationController
       :platform,
       :platform_identifier,
       :data_location,
-      :notes
+      :notes,
+      :run_completed_at
     )
+  end
+
+  def new_po_params
+    params.permit(pipeline_output: [
+      :pipeline_name,
+      :pipeline_version,
+      :platform,
+      :platform_identifier,
+      :data_location,
+      :notes,
+      :run_completed_at
+    ])[:pipeline_output] || {}
   end
 
   def set_pipeline_output
     @po = PipelineOutput.includes(:tags, :user, :project)
       .find(params.permit(:id)[:id])
+    @project = @po.project
   end
 
   def setup_table_queries

@@ -1,67 +1,82 @@
 <%= form_with **form_config, class: "box" do |form| %>
-  <% if @po.errors.any? %>
-    <div class="notification is-danger is-light">
-      There was an issue submitting this form, please correct any errors and try again.
-    </div>
-  <% end %>
+  <div data-controller="click-element">
 
-  <div class="field">
-    <%= form.label :pipeline_name, 'Pipeline Name', class: 'label' %>
-    <div class="control">
-      <%= form.text_field :pipeline_name, class: class_names('input', input_error_class(@po, :pipeline_name)) %>
-    </div>
-    <%= error_message(@po, :pipeline_name) %>
-  </div>
+    <%= form.button id: 'update-po', formaction: @po.persisted? ? edit_pipeline_output_path : new_project_pipeline_output_path(@project), formmethod: 'get', hidden: true, data: { click_element_target: "click" } %>
+    <%= hidden_field_tag :is_refresh, true %>
 
-  <div class="field">
-    <%= form.label :pipeline_version, 'Pipeline Version', class: 'label' %>
-    <div class="control">
-      <%= form.text_field :pipeline_version, class: class_names('input', input_error_class(@po, :pipeline_version)) %>
-    </div>
-    <%= error_message(@po, :pipeline_version) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :platform, 'Platform', class: 'label' %>
-    <div class="control">
-      <%= form.text_field :platform, class: class_names('input', input_error_class(@po, :platform)) %>
-    </div>
-    <%= error_message(@po, :platform) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :platform_identifier, 'Platform Identifier', class: 'label' %>
-    <div class="control">
-      <%= form.text_field :platform_identifier, class: class_names('input', input_error_class(@po, :platform_identifier)) %>
-    </div>
-    <%= error_message(@po, :platform_identifier) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :data_location, 'Data Location', class: 'label' %>
-    <div class="control">
-      <%= form.text_field :data_location, class: class_names('input', input_error_class(@po, :data_location)) %>
-    </div>
-    <%= error_message(@po, :data_location) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :notes, 'Notes', class: 'label' %>
-    <div class="control">
-      <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@po, :notes)) %>
-    </div>
-    <%= error_message(@po, :notes) %>
-  </div>
-
-  <div class="field ">
-    <% if @po.persisted? %>
-      <%= link_to "Cancel", pipeline_output_path(@po), class: "button", data: { turbo_action: 'advance' } %>
-    <% else %>
-      <%= link_to "Cancel", project_path(@po.project), class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+    <% if @po.errors.any? && @submit_attempt %>
+      <div class="notification is-danger is-light">
+        There was an issue submitting this form, please correct any errors and try again.
+      </div>
     <% end %>
-    <%= form.submit 'Submit', class: "button is-primary" %>
-  </div>
 
+    <div class="field">
+      <%= form.label :platform, 'Platform', class: 'label' %>
+      <div class="control is-expanded">
+        <div class="select is-fullwidth">
+          <%= form.select :platform, @platforms, { prompt: 'Select Platform' }, class: class_names('input', input_error_class(@po, :platform, @submit_attempt)), data: { action: "click-element#click" } %>
+        </div>
+      </div>
+      <%= error_message(@po, :platform, @submit_attempt) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :pipeline_name, 'Pipeline Name', class: 'label' %>
+      <%= maybe_disabled(@pipelines.none?) do %>
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <%= form.select :pipeline_name, @pipelines, {include_blank: true}, class: class_names('input', input_error_class(@po, :pipeline_name, @submit_attempt)), data: { action: "click-element#click" } %>
+          </div>
+        </div>
+      <% end %>
+      <%= error_message(@po, :pipeline_name, @submit_attempt) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :pipeline_version, 'Pipeline Version', class: 'label' %>
+      <div class="control">
+        <%= form.text_field :pipeline_version, class: class_names('input', input_error_class(@po, :pipeline_version, @submit_attempt)), data: { action: "change->click-element#click" } %>
+      </div>
+      <%= error_message(@po, :pipeline_version, @submit_attempt) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :platform_identifier, 'Platform Identifier', class: 'label' %>
+      <div class="control">
+        <%= form.text_field :platform_identifier, class: class_names('input', input_error_class(@po, :platform_identifier, @submit_attempt)), data: { action: "change->click-element#click" }  %>
+      </div>
+      <%= error_message(@po, :platform_identifier, @submit_attempt) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :data_location, 'Data Location', class: 'label' %>
+      <div class="control">
+        <%= form.text_field :data_location, class: class_names('input', input_error_class(@po, :data_location, @submit_attempt)), data: { action: "change->click-element#click" }  %>
+      </div>
+      <%= error_message(@po, :data_location, @submit_attempt) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :notes, 'Notes', class: 'label' %>
+      <div class="control">
+        <%= form.text_area :notes, rows: 10, class: class_names('textarea', input_error_class(@po, :notes, @submit_attempt)) %>
+      </div>
+      <%= error_message(@po, :notes, @submit_attempt) %>
+    </div>
+
+    <div class="field is-grouped is-grouped-right">
+      <div class="control">
+        <% if @po.persisted? %>
+          <%= link_to "Cancel", pipeline_output_path(@po), class: "button", data: { turbo_action: 'advance' } %>
+        <% else %>
+          <%= link_to "Cancel", project_path(@po.project), class: "button", data: { turbo_action: 'advance', turbo_frame: '_top' } %>
+        <% end %>
+      </div>
+      <div class="control">
+        <%= form.submit 'Submit', class: "button is-primary" %>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <% if @po.persisted? %>
