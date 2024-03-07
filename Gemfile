@@ -13,7 +13,6 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
-gem "redis", "~> 4.0"
 gem "bootsnap", require: false
 gem 'octicons_helper'
 gem 'kramdown'
