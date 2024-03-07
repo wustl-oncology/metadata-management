@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_08_154239) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_07_150449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -158,6 +158,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_08_154239) do
     t.index ["unaligned_data_path"], name: "index_sequencing_products_on_unaligned_data_path"
   end
 
+  create_table "solid_errors", force: :cascade do |t|
+    t.string "exception_class", limit: 200, null: false
+    t.string "message", null: false
+    t.string "severity", limit: 25, null: false
+    t.string "source"
+    t.datetime "resolved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exception_class", "message", "severity", "source"], name: "solid_error_uniqueness_index", unique: true
+    t.index ["resolved_at"], name: "index_solid_errors_on_resolved_at"
+  end
+
+  create_table "solid_errors_occurrences", force: :cascade do |t|
+    t.bigint "error_id", null: false
+    t.text "backtrace"
+    t.json "context"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["error_id"], name: "index_solid_errors_occurrences_on_error_id"
+  end
+
   create_table "taggable_tags", force: :cascade do |t|
     t.bigint "tag_id", null: false
     t.string "taggable_type"
@@ -204,4 +225,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_08_154239) do
   add_foreign_key "pipeline_outputs_sequencing_products", "sequencing_products", name: "fk_sequenceproduct_bridge"
   add_foreign_key "projects", "labs"
   add_foreign_key "sequencing_products", "samples"
+  add_foreign_key "solid_errors_occurrences", "solid_errors", column: "error_id"
 end

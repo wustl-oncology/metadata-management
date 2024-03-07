@@ -25,5 +25,7 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback' => 'sessions#create'
   get '/sign_out' => 'sessions#destroy', as: :signout
 
+  mount SolidErrors::Engine, at: "/errors", constraints: UserIsAdminConstraint.new
+
   root to: 'static#index'
 end

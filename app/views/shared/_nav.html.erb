@@ -20,6 +20,9 @@
             <%= link_to '/admin', class: "navbar-item" do %>
               Admin
             <% end %>
+            <%= link_to '/errors', class: "navbar-item" do %>
+              Errors
+            <% end %>
           <% end %>
           <% if policy(Project).new? %>
             <%= link_to new_project_path, class: "navbar-item" do %>

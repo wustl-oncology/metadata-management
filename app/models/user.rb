@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  encrypts :api_key, deterministic: true
+#  encrypts :api_key, deterministic: true
 
   validates :api_key, uniqueness: true
   validates :github_uid, uniqueness: true

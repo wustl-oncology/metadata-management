@@ -343,6 +343,8 @@ GEM
     solargraph-rails (1.1.0)
       activesupport
       solargraph
+    solid_errors (0.3.5)
+      rails (~> 7.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -418,6 +420,7 @@ DEPENDENCIES
   sidekiq (~> 7.1)
   solargraph
   solargraph-rails
+  solid_errors (~> 0.3.5)
   sprockets-rails
   stimulus-rails
   textacular
