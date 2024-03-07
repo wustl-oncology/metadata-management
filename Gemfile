@@ -46,6 +46,6 @@ group :test do
 end
 
 
-gem "sidekiq", "~> 7.1"
-
 gem "solid_errors", "~> 0.3.5"
+
+gem "solid_queue", "~> 0.2.2"

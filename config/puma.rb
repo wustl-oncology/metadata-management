@@ -8,6 +8,9 @@ max_threads_count = 2
 min_threads_count = 2
 threads min_threads_count, max_threads_count
 
+# Have puma start and supervise Solid Queue
+plugin :solid_queue
+
 # Specifies the `worker_timeout` threshold that Puma will use to wait before
 # terminating a worker in development environments.
 #

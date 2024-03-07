@@ -109,7 +109,6 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 COPY <<-"EOF" /rails/Procfile.prod
 nginx: /usr/sbin/nginx -g "daemon off;"
 rails: ./bin/rails server -p 3001
-sidekiq: bundle exec sidekiq -c 1
 EOF
 
 # Start the server by default, this can be overwritten at runtime
