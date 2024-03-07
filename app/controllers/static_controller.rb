@@ -4,6 +4,10 @@ class StaticController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
-    render layout: false
+    if current_user
+      redirect_to projects_path
+    else
+      render layout: false
+    end
   end
 end

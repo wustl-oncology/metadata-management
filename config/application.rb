@@ -40,5 +40,6 @@ module MetadataManagement
     # config.eager_load_paths << Rails.root.join("extras")
     #
     config.active_record.async_query_executor = :global_thread_pool
+    config.mission_control.jobs.base_controller_class = "AdminController"
   end
 end
