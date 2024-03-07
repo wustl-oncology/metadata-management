@@ -51,3 +51,5 @@ gem "solid_errors", "~> 0.3.5"
 gem "solid_queue", "~> 0.2.2"
 
 gem "mission_control-jobs", "~> 0.1.1"
+
+gem "solid_cache", "~> 0.5.3"

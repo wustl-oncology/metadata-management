@@ -341,6 +341,10 @@ GEM
     solargraph-rails (1.1.0)
       activesupport
       solargraph
+    solid_cache (0.5.3)
+      activejob (>= 7)
+      activerecord (>= 7)
+      railties (>= 7)
     solid_errors (0.3.5)
       rails (~> 7.0)
     solid_queue (0.2.2)
@@ -420,6 +424,7 @@ DEPENDENCIES
   selenium-webdriver
   solargraph
   solargraph-rails
+  solid_cache (~> 0.5.3)
   solid_errors (~> 0.3.5)
   solid_queue (~> 0.2.2)
   sprockets-rails
