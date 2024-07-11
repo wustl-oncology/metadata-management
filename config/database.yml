@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  database: metadata_management_production
-  username: metadata_management
-  password: <%= ENV["METADATA_MANAGEMENT_DATABASE_PASSWORD"] %>
+  database: genoview
+  username: genoview
+  password: <%= Rails.application.credentials.database_password %>
