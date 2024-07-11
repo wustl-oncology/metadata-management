@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.3.0"
+ruby "~>3.3.0"
 
 gem "rails", "~> 7.1.0"
 
@@ -37,6 +37,9 @@ group :development do
   gem 'solargraph'
   gem 'solargraph-rails'
   gem "dockerfile-rails", ">= 1.2"
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
 end
 
 group :test do
