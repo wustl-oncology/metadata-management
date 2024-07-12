@@ -1,9 +1,8 @@
-
-require 'csv' 
-class ImportSampleData < ApplicationJob
+require 'csv'
+class ImportTsvData < ApplicationJob
   attr_reader :upload, :errors
 
-  def perform(upload)
+  def perform(upload, row_validator_type, user)
     @errors = Hash.new { |h, k| h[k] = [] }
     @upload = upload
     first_row = true
@@ -13,10 +12,10 @@ class ImportSampleData < ApplicationJob
       upload.sample_file.open do |file|
         CSV.foreach(file, col_sep: "\t", headers: true, row_sep: :auto).with_index do |row, i|
           if first_row
-            break unless validate_headers(row.headers)
+            break unless validate_headers(row.headers, row_validator_type.expected_headers)
             first_row = false
           end
-          row_validator = UploadedRow.new(row, upload.project)
+          row_validator = row_validator_type.new(row, upload.project, user)
           row_validator.persist_row
           if row_validator.errors.any?
             errors["row_#{i+1}"] = row_validator.errors
@@ -36,15 +35,15 @@ class ImportSampleData < ApplicationJob
   end
 
   private
-  def validate_headers(headers)
+  def validate_headers(headers, expected_headers)
     update_message("Validating Headers..")
 
-    if headers != Upload.expected_headers
-      missing_headers = Upload.expected_headers - headers
+    if headers != expected_headers
+      missing_headers = expected_headers - headers
       if missing_headers.any?
         errors[:headers] << "Expected to find #{missing_headers.join(', ')} headers but did not."
       end
-      extra_headers = headers - Upload.expected_headers
+      extra_headers = headers - expected_headers
       if extra_headers.any?
         errors[:headers] << "Found unexpected headers: #{extra_headers.join(', ')}."
       end

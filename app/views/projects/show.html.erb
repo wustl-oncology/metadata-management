@@ -19,9 +19,13 @@
               <span class="icon is-small"><%= octicon "plus", :height => 24 %></span>
               <span>Add Outputs</span>
             <% end %>
-            <%= link_to new_project_upload_path(@project), class: 'button is-small mr-3', data: { turbo_action: 'advance', turbo_frame: '_top' } do %>
+            <%= link_to new_project_upload_path(@project, upload_type: 'sample'), class: 'button is-small mr-3', data: { turbo_action: 'advance', turbo_frame: '_top' } do %>
               <span class="icon is-small"><%= octicon "upload", :height => 24 %></span>
               <span>Import Samples</span>
+            <% end %>
+            <%= link_to new_project_upload_path(@project, upload_type: 'outputs'), class: 'button is-small mr-3', data: { turbo_action: 'advance', turbo_frame: '_top' } do %>
+              <span class="icon is-small"><%= octicon "upload", :height => 24 %></span>
+              <span>Import Results</span>
             <% end %>
             <%= link_to edit_project_path(@project), class: 'button is-small' do %>
               <span class="icon is-small"><%= octicon "pencil", :height => 24 %></span>

@@ -1,10 +1,27 @@
-class UploadedRow
-  attr_reader :row, :errors, :project, :sample, :sequencing_product
-  def initialize(row, project)
+class UploadedSampleRow
+  attr_reader :row, :errors, :project, :sample, :sequencing_product, :user
+
+  def self.expected_headers
+    [
+      'Sample Name',
+      'Species',
+      'Tissue',
+      'Individual',
+      'Timepoint',
+      'Disease Status',
+      'Library Prep',
+      'Instrument',
+      'Unaligned Data Path',
+      'Flow Cell ID',
+    ]
+  end
+
+  def initialize(row, project, user)
     @row = row
     @errors = []
     @created_entities = []
     @project = project
+    @user = user
   end
 
   def valid?
@@ -20,7 +37,7 @@ class UploadedRow
   private
   def validate_required_values
     #TODO - not all fields will be required
-    #Upload.expected_headers.each do |header|
+    #self.class.expected_headers.each do |header|
       #if row[header].blank?
         #errors << "Required field missing: #{header}"
       #end
@@ -30,7 +47,7 @@ class UploadedRow
   def create_sample
     existing_sample = Sample.find_by(name: row['Sample Name'].strip)
     proposed_sample = Sample.from_upload_row(row)
-    
+
     if existing_sample
       [:species, :individual, :timepoint, :disease_status].each do |field|
         if existing_sample.send(field) != proposed_sample.send(field)

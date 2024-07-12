@@ -3,6 +3,12 @@ class UploadsController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def new
+    @upload_type = params[:upload_type]
+    @template_file = if params[:upload_type] == 'sample'
+              "/sample-upload-template.tsv"
+             else
+              "/pipeline-output-upload-template.tsv"
+             end
     authorize @project, policy_class: UploadPolicy
   end
 
@@ -15,15 +21,20 @@ class UploadsController < ApplicationController
         sample_file: params[:import]
       )
 
-      ImportSampleData.set(wait: 2.seconds).perform_later(@upload)
+      upload_type = if params[:upload_type] == 'sample'
+                      UploadedSampleRow
+                    else
+                      UploadedPipelineOutputRow
+                    end
+
+      ImportTsvData.set(wait: 2.seconds).perform_later(@upload, upload_type, current_user)
       redirect_to project_upload_path(@project, @upload), status: :see_other
     end
   end
 
   def show
     @upload = Upload.find(params[:id])
-  end 
-
+  end
 
   private
   def set_project

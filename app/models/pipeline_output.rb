@@ -33,4 +33,14 @@ class PipelineOutput < ApplicationRecord
   def display_name
     data_location
   end
+
+  def self.from_upload_row(row)
+    PipelineOutput.new(
+      pipeline_name: row['Pipeline Name'],
+      pipeline_version: row['Pipeline Version'],
+      platform: row['Platform'],
+      platform_identifier: row['Platform Identifier'],
+      data_location: row['Data Location']
+    )
+  end
 end

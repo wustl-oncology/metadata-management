@@ -136,18 +136,8 @@ class ImportPipelineOutputsRequest
       'dataLocation'
     ],
     oneOf: [
-      properties: {
-        projectId: {
-          type: 'integer'
-        },
-        required: [ 'projectId' ]
-      },
-      properties: {
-        projectName: {
-          type: 'string'
-        },
-        required: [ 'projectName' ]
-      }
+      projectId: { type: 'integer,' },
+      projectName: { type: 'string' }
     ]
   }
 end
