@@ -81,6 +81,10 @@ test:
 #
 production:
   <<: *default
+  <% if ENV["FLY_APP_NAME"].present? %>
+  url: <%= ENV["DATABASE_URL"] %>
+  <% else %>
   database: genoview
   username: genoview
   password: <%= Rails.application.credentials.database_password %>
+  <% end %>
