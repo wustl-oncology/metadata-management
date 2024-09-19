@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   get '/sign_out' => 'sessions#destroy', as: :signout
 
   mount SolidErrors::Engine, at: "/errors", constraints: UserIsAdminConstraint.new
-  mount MissionControl::Jobs::Engine, at: "/jobs"
+  mount MissionControl::Jobs::Engine, at: "/jobs", constraints: UserIsAdminConstraint.new
 
   root to: 'static#index'
 end
