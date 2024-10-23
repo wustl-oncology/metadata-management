@@ -1,4 +1,4 @@
-unless ENV['FLY_APP_NAME'].present?
+if ENV['FLY_APP_NAME'].nil?
   app_dir = '/var/www/genoview/current'
 
   max_threads_count = 2
