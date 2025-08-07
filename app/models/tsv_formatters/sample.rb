@@ -1,15 +1,16 @@
 module TsvFormatters
   class Sample
     def headers
-      [
-        'id', 
-        'name',
-        'species',
-        'disease_status',
-        'individual',
-        'timepoint',
-        'notes',
-        'tags'
+      %w[
+        id
+        name
+        species
+        disease_status
+        individual
+        timepoint
+        read_length
+        notes
+        tags
       ]
     end
 
@@ -21,6 +22,7 @@ module TsvFormatters
         s.disease_status,
         s.individual,
         s.timepoint,
+        s.read_length,
         s.notes,
         s.tags.map(&:tag).join(',')
       ]

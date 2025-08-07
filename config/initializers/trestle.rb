@@ -3,7 +3,7 @@ Trestle.configure do |config|
   #
   # Set the page title shown in the main header within the admin.
   #
-  config.site_title = "Metadata Management"
+  config.site_title = 'Genoview'
 
   # Specify a custom image to be used in place of the site title for mobile and
   # expanded/desktop navigation. These images should be placed within your
@@ -74,12 +74,10 @@ Trestle.configure do |config|
 
   # Register callbacks to run before, after or around all Trestle actions.
   #
-   config.before_action do |controller|
-     current_user = User.find_by(id: session[:user_id])
-     unless current_user && current_user.admin?
-      redirect_to '/'
-    end
-   end
+  config.before_action do |_controller|
+    current_user = User.find_by(id: session[:user_id])
+    redirect_to '/' unless current_user && current_user.admin?
+  end
   #
   # config.after_action do |controller|
   #   Rails.logger.debug("After action")

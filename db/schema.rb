@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_17_154604) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -150,6 +150,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_17_154604) do
     t.text "targeted_capture"
     t.text "paired_end"
     t.text "batch"
+    t.integer "read_length"
     t.index "to_tsvector('english'::regconfig, unaligned_data_path)", name: "idx_on_to_tsvector_english_unaligned_data_path_16c108c372", using: :gin
     t.index ["flow_cell_id"], name: "index_sequencing_products_on_flow_cell_id"
     t.index ["instrument"], name: "index_sequencing_products_on_instrument"

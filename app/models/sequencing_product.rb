@@ -14,28 +14,30 @@ class SequencingProduct < ApplicationRecord
       kit: row['Kit'],
       targeted_capture: row['Targeted Capture'],
       paired_end: row['Paired End'],
-      batch: row['Batch']
+      batch: row['Batch'],
+      read_length: row['Read Length']
     )
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    [
-      "library_prep",
-      "flow_cell_id",
-      "instrument",
-      "unaligned_data_path",
-      "strand",
-      "kit",
-      "targeted_capture",
-      "paired_end",
-      "batch",
-      "created_at",
-      "updated_at"
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[
+      library_prep
+      flow_cell_id
+      instrument
+      unaligned_data_path
+      strand
+      kit
+      targeted_capture
+      paired_end
+      batch
+      read_length
+      created_at
+      updated_at
     ]
   end
 
-  def self.ransackable_associations(auth_object = nil)
-    ['sample', 'tags']
+  def self.ransackable_associations(_auth_object = nil)
+    %w[sample tags]
   end
 
   def display_name

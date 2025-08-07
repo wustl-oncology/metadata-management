@@ -6,8 +6,8 @@
     <%= form.hidden_field :upload_type, value: @upload_type %>
     <div class="field">
       <div class="control">
-        <span>
-          <a href="<%= @template_file %>">Download</a> the template.
+        <span data-turbo="false">
+          <a target="_blank" href="<%= @template_file %>">Download</a> the template.
         </span>
       </div>
     </div>

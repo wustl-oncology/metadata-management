@@ -13,19 +13,16 @@ class ImportTsvData < ApplicationJob
         CSV.foreach(file, col_sep: "\t", headers: true, row_sep: :auto).with_index do |row, i|
           if first_row
             break unless validate_headers(row.headers, row_validator_type.expected_headers)
+
             first_row = false
           end
           row_validator = row_validator_type.new(row, upload.project, user)
           row_validator.persist_row
-          if row_validator.errors.any?
-            errors["row_#{i+1}"] = row_validator.errors
-          end
+          errors["row_#{i + 1}"] = row_validator.errors if row_validator.errors.any?
         end
       end
 
-      if any_errors?
-        raise ActiveRecord::Rollback
-      end
+      raise ActiveRecord::Rollback if any_errors?
     end
   rescue StandardError => e
     errors[:general] << e.message
@@ -35,45 +32,43 @@ class ImportTsvData < ApplicationJob
   end
 
   private
+
   def validate_headers(headers, expected_headers)
-    update_message("Validating Headers..")
+    update_message('Validating Headers..')
 
     if headers != expected_headers
       missing_headers = expected_headers - headers
-      if missing_headers.any?
-        errors[:headers] << "Expected to find #{missing_headers.join(', ')} headers but did not."
-      end
+      errors[:headers] << "Expected to find #{missing_headers.join(', ')} headers but did not." if missing_headers.any?
       extra_headers = headers - expected_headers
-      if extra_headers.any?
-        errors[:headers] << "Found unexpected headers: #{extra_headers.join(', ')}."
-      end
+      errors[:headers] << "Found unexpected headers: #{extra_headers.join(', ')}." if extra_headers.any?
     end
 
     if errors[:headers].none?
-      update_message("Validating Rows..")
+      update_message('Validating Rows..')
       add_step('Headers Validated')
-      return true
+      true
     else
       add_step('Invalid Headers Detected', :error)
-      return false
+      false
     end
   end
 
   def convey_result
+    binding.irb
     if any_errors?
       Turbo::StreamsChannel.broadcast_update_to(
         upload,
-        target: "import-result",
+        target: 'import-result',
         partial: 'uploads/error-result',
-        locals: {errors: errors, project: upload.project}
+        locals: { errors: errors, project: upload.project }
       )
       update_message('Import Failed')
     else
       Turbo::StreamsChannel.broadcast_update_to(
         upload,
-        target: "import-result",
+        target: 'import-result',
         partial: 'uploads/success-result',
-        locals: {project: upload.project}
+        locals: { project: upload.project }
       )
       update_message('Import Successful')
     end
@@ -87,7 +82,7 @@ class ImportTsvData < ApplicationJob
   def update_message(new_message)
     Turbo::StreamsChannel.broadcast_update_to(
       upload,
-      target: "current-step",
+      target: 'current-step',
       html: new_message
     )
   end
@@ -95,9 +90,9 @@ class ImportTsvData < ApplicationJob
   def add_step(message, status = :success)
     Turbo::StreamsChannel.broadcast_append_to(
       upload,
-      target: "step-list",
+      target: 'step-list',
       partial: 'uploads/step',
-      locals: {status: status, message: message}
+      locals: { status: status, message: message }
     )
   end
 

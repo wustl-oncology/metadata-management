@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 class PlatformConstraints
-  PLATFORMS = [
-    'Terra',
-    'GMS',
-    'DRAGEN',
-    'GCP'
+  PLATFORMS = %w[
+    Terra
+    GMS
+    DRAGEN
+    GCP
   ]
 
   def self.pipelines_for(platform:)
@@ -15,8 +16,7 @@ class PlatformConstraints
     ID_FORMATS.fetch(platform, [])
   end
 
-  private
-  #TODO - make this configurable externally
+  # TODO: - make this configurable externally
   PIPELINES = {
     'Terra' => [
       'RnaSeq',
@@ -27,7 +27,8 @@ class PlatformConstraints
       'ClinSeq',
       'ReferenceAlignment',
       'RnaSeq',
-      'SomaticVariation'
+      'SomaticVariation',
+      'June 2019 RNAseq HISAT StringTie Kallisto QC ParamFix'
     ],
     'DRAGEN' => [
       'Somatic Variant'
@@ -39,8 +40,8 @@ class PlatformConstraints
 
   ID_FORMATS = {
     'Terra' => [/\A\d+\z/, 'Numeric'],
-    'GMS' => [/\A\d+\z/, 'Numeric'],
     'DRAGEN' => [/\A\d+\z/, 'Numeric'],
+    'GMS' => [/\A[0-9a-f]{32}\z/i, 'UUID'],
     'GCP' => [/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i, 'UUID']
   }
 end
