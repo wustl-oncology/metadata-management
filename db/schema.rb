@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_29_183855) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
-  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -100,6 +100,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
     t.index ["sequencing_product_id"], name: "idx_sequenceproduct_bridge"
   end
 
+  create_table "pipelines", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "platform", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "platform"], name: "index_pipelines_on_name_and_platform", unique: true
+  end
+
   create_table "projects", force: :cascade do |t|
     t.text "name", null: false
     t.text "notes"
@@ -159,6 +167,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
     t.index ["unaligned_data_path"], name: "index_sequencing_products_on_unaligned_data_path"
   end
 
+  create_table "solid_cable_messages", force: :cascade do |t|
+    t.binary "channel", null: false
+    t.binary "payload", null: false
+    t.datetime "created_at", null: false
+    t.bigint "channel_hash", null: false
+    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
+    t.index ["channel_hash"], name: "index_solid_cable_messages_on_channel_hash"
+    t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
+  end
+
   create_table "solid_cache_entries", force: :cascade do |t|
     t.binary "key", null: false
     t.binary "value", null: false
@@ -171,19 +189,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
   end
 
   create_table "solid_errors", force: :cascade do |t|
-    t.string "exception_class", limit: 200, null: false
-    t.string "message", null: false
-    t.string "severity", limit: 25, null: false
-    t.string "source"
+    t.text "exception_class", null: false
+    t.text "message", null: false
+    t.text "severity", null: false
+    t.text "source"
     t.datetime "resolved_at"
+    t.string "fingerprint", limit: 64, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exception_class", "message", "severity", "source"], name: "solid_error_uniqueness_index", unique: true
+    t.index ["fingerprint"], name: "index_solid_errors_on_fingerprint", unique: true
     t.index ["resolved_at"], name: "index_solid_errors_on_resolved_at"
   end
 
   create_table "solid_errors_occurrences", force: :cascade do |t|
-    t.bigint "error_id", null: false
+    t.integer "error_id", null: false
     t.text "backtrace"
     t.json "context"
     t.datetime "created_at", null: false
@@ -250,7 +269,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
     t.string "hostname"
     t.text "metadata"
     t.datetime "created_at", null: false
+    t.string "name", null: false
     t.index ["last_heartbeat_at"], name: "index_solid_queue_processes_on_last_heartbeat_at"
+    t.index ["name", "supervisor_id"], name: "index_solid_queue_processes_on_name_and_supervisor_id", unique: true
     t.index ["supervisor_id"], name: "index_solid_queue_processes_on_supervisor_id"
   end
 
@@ -262,6 +283,31 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
     t.index ["job_id"], name: "index_solid_queue_ready_executions_on_job_id", unique: true
     t.index ["priority", "job_id"], name: "index_solid_queue_poll_all"
     t.index ["queue_name", "priority", "job_id"], name: "index_solid_queue_poll_by_queue"
+  end
+
+  create_table "solid_queue_recurring_executions", force: :cascade do |t|
+    t.bigint "job_id", null: false
+    t.string "task_key", null: false
+    t.datetime "run_at", null: false
+    t.datetime "created_at", null: false
+    t.index ["job_id"], name: "index_solid_queue_recurring_executions_on_job_id", unique: true
+    t.index ["task_key", "run_at"], name: "index_solid_queue_recurring_executions_on_task_key_and_run_at", unique: true
+  end
+
+  create_table "solid_queue_recurring_tasks", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "schedule", null: false
+    t.string "command", limit: 2048
+    t.string "class_name"
+    t.text "arguments"
+    t.string "queue_name"
+    t.integer "priority", default: 0
+    t.boolean "static", default: true, null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_solid_queue_recurring_tasks_on_key", unique: true
+    t.index ["static"], name: "index_solid_queue_recurring_tasks_on_static"
   end
 
   create_table "solid_queue_scheduled_executions", force: :cascade do |t|
@@ -336,5 +382,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_152926) do
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 end

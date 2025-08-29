@@ -9,34 +9,12 @@ class PlatformConstraints
   ]
 
   def self.pipelines_for(platform:)
-    PIPELINES.fetch(platform, [])
+    Pipeline.where(platform: platform).pluck(:name)
   end
 
   def self.id_format_for(platform:)
     ID_FORMATS.fetch(platform, [])
   end
-
-  # TODO: - make this configurable externally
-  PIPELINES = {
-    'Terra' => [
-      'RnaSeq',
-      'Somatic Variant',
-      'Vaccine Trial'
-    ],
-    'GMS' => [
-      'ClinSeq',
-      'ReferenceAlignment',
-      'RnaSeq',
-      'SomaticVariation',
-      'June 2019 RNAseq HISAT StringTie Kallisto QC ParamFix'
-    ],
-    'DRAGEN' => [
-      'Somatic Variant'
-    ],
-    'GCP' => [
-      'Some WDL'
-    ]
-  }
 
   ID_FORMATS = {
     'Terra' => [/\A\d+\z/, 'Numeric'],
