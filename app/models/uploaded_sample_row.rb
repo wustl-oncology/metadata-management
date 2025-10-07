@@ -40,6 +40,10 @@ class UploadedSampleRow
     create_sequencing_product unless errors.any?
   end
 
+  def self.upload_type
+    'sample'
+  end
+
   private
 
   def validate_required_values
@@ -56,7 +60,7 @@ class UploadedSampleRow
     proposed_sample = Sample.from_upload_row(row)
 
     if existing_sample
-      %i[species individual timepoint disease_status read_length].each do |field|
+      %i[species individual timepoint disease_status].each do |field|
         if existing_sample.send(field) != proposed_sample.send(field)
           errors << "#{field.to_s.humanize} value for sample #{existing_sample.name} conflicts with existing sample."
         end
@@ -78,7 +82,7 @@ class UploadedSampleRow
     proposed_product = SequencingProduct.from_upload_row(row)
 
     if existing_product
-      %i[library_prep instrument flow_cell_id strand kit targeted_capture paired_end batch].each do |field|
+      %i[library_prep instrument flow_cell_id strand kit targeted_capture paired_end batch read_length].each do |field|
         if existing_product.send(field) != proposed_product.send(field)
           errors << "#{field.to_s.humanize} value for sequencing product #{existing_product.unaligned_data_path} conflicts with existing data."
         end

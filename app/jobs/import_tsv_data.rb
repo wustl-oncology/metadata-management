@@ -1,10 +1,11 @@
 require 'csv'
 class ImportTsvData < ApplicationJob
-  attr_reader :upload, :errors
+  attr_reader :upload, :errors, :row_validator_type
 
   def perform(upload, row_validator_type, user)
     @errors = Hash.new { |h, k| h[k] = [] }
     @upload = upload
+    @row_validator_type = row_validator_type
     first_row = true
 
     add_step('Checking File')
@@ -54,13 +55,13 @@ class ImportTsvData < ApplicationJob
   end
 
   def convey_result
-    binding.irb
+    binding.irb unless Rails.env.production?
     if any_errors?
       Turbo::StreamsChannel.broadcast_update_to(
         upload,
         target: 'import-result',
         partial: 'uploads/error-result',
-        locals: { errors: errors, project: upload.project }
+        locals: { errors: errors, project: upload.project, upload_type: row_validator_type.upload_type }
       )
       update_message('Import Failed')
     else

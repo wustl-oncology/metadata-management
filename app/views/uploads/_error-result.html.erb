@@ -1,4 +1,4 @@
-<%# locals: (errors:, project:) -%>
+<%# locals: (errors:, project:, upload_type:) -%>
 <div class="notification is-danger is-light">
   <h3>Error</h3>
   <div class="content">
@@ -15,7 +15,7 @@
       <% end %>
   </div>
   After you have corrected these issues, you can
-  <%= link_to new_project_upload_path(project), class: 'button is-small', data: {turbo_action: 'advance', turbo_frame: '_top'} do %>
+  <%= link_to new_project_upload_path(project, upload_type: upload_type), class: 'button is-small', data: {turbo_action: 'advance', turbo_frame: '_top'} do %>
     Click Here
   <% end %>
    to try again.

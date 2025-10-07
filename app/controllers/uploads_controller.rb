@@ -29,7 +29,7 @@ class UploadsController < ApplicationController
                   end
 
     ImportTsvData.set(wait: 2.seconds).perform_later(@upload, upload_type, current_user)
-    redirect_to project_upload_path(@project, @upload), status: :see_other
+    redirect_to project_upload_path(@project, @upload, upload_type: params[:upload_type]), status: :see_other
   end
 
   def show

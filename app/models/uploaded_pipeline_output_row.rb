@@ -3,12 +3,12 @@ class UploadedPipelineOutputRow
 
   def self.expected_headers
     [
-      "Pipeline Name",
-      "Pipeline Version",
-      "Platform",
-      "Platform Identifier",
-      "Data Location",
-      "Input Paths",
+      'Pipeline Name',
+      'Pipeline Version',
+      'Platform',
+      'Platform Identifier',
+      'Data Location',
+      'Input Paths'
     ]
   end
 
@@ -29,22 +29,25 @@ class UploadedPipelineOutputRow
     create_pipeline_output unless errors.any?
   end
 
+  def self.upload_type
+    'pipeline-output'
+  end
+
   private
+
   def validate_required_values
-    #TODO - not all fields will be required
-    #self.class.expected_headers.each do |header|
-      #if row[header].blank?
-        #errors << "Required field missing: #{header}"
-      #end
-    #end
+    # TODO: - not all fields will be required
+    # self.class.expected_headers.each do |header|
+    # if row[header].blank?
+    # errors << "Required field missing: #{header}"
+    # end
+    # end
   end
 
   def create_pipeline_output
-    paths = row["Input Paths"].split(",")
+    paths = row['Input Paths'].split(',')
     inputs = SequencingProduct.where(unaligned_data_path: row['Input Paths'])
-    if inputs.size != paths.size
-      errors << "Expected to find #{paths.size} inputs but found #{inputs.size}"
-    end
+    errors << "Expected to find #{paths.size} inputs but found #{inputs.size}" if inputs.size != paths.size
 
     if PipelineOutput.find_by(data_location: row['Data Location']).present?
       errors << "Result already exists at #{row['Data Location']}"
