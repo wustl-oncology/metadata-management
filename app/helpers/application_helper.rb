@@ -11,11 +11,9 @@ module ApplicationHelper
 
   def error_message(model, field, submit_attempt = true)
     type = submit_attempt ? 'is-danger' : 'is-info'
-    if model.errors.include?(field)
-      tag.p(model.errors.full_messages_for(field).join(', '), class: "help #{type}")
-    else
-      nil
-    end
+    return unless model.errors.include?(field)
+
+    tag.p(model.errors.full_messages_for(field).join(', '), class: "help #{type}")
   end
 
   def icon_for_status(status)
@@ -28,21 +26,21 @@ module ApplicationHelper
 
   def half_array(array)
     len = array.size
-    first = (len/2.0).ceil
+    first = (len / 2.0).ceil
     [array.take(first), array.drop(first)]
   end
 
   def search_tag_class(elem)
     res = case elem
-    when Sample
-      "is-link"
-    when Project
-      "is-primary"
-    when SequencingProduct
-      "is-warning"
-    when PipelineOutput
-      "is-danger"
-    end
+          when Sample
+            'is-link'
+          when Project
+            'is-primary'
+          when SequencingProduct
+            'is-warning'
+          when PipelineOutput
+            'is-danger'
+          end
 
     "#{res} is-light"
   end
@@ -60,9 +58,17 @@ module ApplicationHelper
     end
   end
 
-  def maybe_disabled(condition)
-    tag.fieldset(disabled: condition) do
-      yield
+  def truncated_file_path(path)
+    split_length = 25
+    if path.size > split_length
+      components = path.split('/')
+      truncate(path, length: split_length, omission: ".../#{components[-1]}")
+    else
+      path
     end
+  end
+
+  def maybe_disabled(condition, &block)
+    tag.fieldset(disabled: condition, &block)
   end
 end
