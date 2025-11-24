@@ -15,7 +15,7 @@
       <%= po.platform_identifier %>
     </td>
     <td>
-      <%= link_to po.data_location, pipeline_output_path(po), data: {turbo_frame: :_top } %>
+      <%= link_to truncated_file_path(po.data_location), pipeline_output_path(po), data: {turbo_frame: :_top } %>
     </td>
     <td>
       <%= link_to preview_note_path(subject: 'pipeline_output', id: po.id), data: { turbo_frame: :modal } do %>

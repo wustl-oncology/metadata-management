@@ -12,7 +12,7 @@
       <%= sp.flow_cell_id %>
     </td>
     <td>
-      <%= link_to sp.unaligned_data_path, sequencing_product_path(sp), data: { turbo_frame: :_top } %> 
+      <%= link_to truncated_file_path(sp.unaligned_data_path), sequencing_product_path(sp), data: { turbo_frame: :_top } %> 
     </td>
     <td>
       <%= link_to preview_note_path(subject: 'sequencing_product', id: sp.id), data: { turbo_frame: :modal } do %>

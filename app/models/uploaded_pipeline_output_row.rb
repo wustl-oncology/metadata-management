@@ -46,7 +46,7 @@ class UploadedPipelineOutputRow
 
   def create_pipeline_output
     paths = row['Input Paths'].split(',')
-    inputs = SequencingProduct.where(unaligned_data_path: row['Input Paths'])
+    inputs = SequencingProduct.where(unaligned_data_path: paths)
     errors << "Expected to find #{paths.size} inputs but found #{inputs.size}" if inputs.size != paths.size
 
     if PipelineOutput.find_by(data_location: row['Data Location']).present?
