@@ -49,3 +49,5 @@ gem 'solid_cable'
 gem 'solid_cache'
 gem 'solid_errors'
 gem 'solid_queue'
+
+gem "openssl", "~> 3.3"
