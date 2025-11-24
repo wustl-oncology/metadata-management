@@ -3,7 +3,7 @@
 <% collection.each do |project| %>
   <%= tag.tr id: dom_id(project) do %>
     <td>
-      <%= link_to project_path(project), data: { turbo_frame: '_top' } do %>
+      <%= link_to project_path(project, display: "samples" ), data: { turbo_frame: '_top' } do %>
         <%= project.name %>
       <% end %>
     </td>

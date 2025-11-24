@@ -14,7 +14,7 @@
 
   <div class="field">
     <%= form.label :lab, 'Lab', class: 'label' %>
-    <div class="control">
+    <div class="select">
       <%= form.collection_select :lab_id, @labs, :id, :name,  class: class_names('input', input_error_class(@project, :lab)) %>
     </div>
     <%= error_message(@project, :lab_id) %>
