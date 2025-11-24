@@ -8,15 +8,15 @@ module TableDownloader
   end
 
   def set_tsv_path
-    @tsv_path = "#{request.path}.tsv?#{params.permit(q: {}).to_query}"
+    @tsv_path = "#{request.path}/#{request.params[:display]}.tsv?#{params.permit(q: {}).to_query}"
   end
 
   def stream_table(results:, filename:, formatter:)
-    headers.delete("Content-Length")
-    headers["Cache-Control"] = "no-cache"
-    headers["Content-Type"] = "text/tab-separated-values"
-    headers["Content-Disposition"] = "attachment; filename=\"#{filename}-#{Date.today}.tsv\""
-    headers["X-Accel-Buffering"] = "no"
+    headers.delete('Content-Length')
+    headers['Cache-Control'] = 'no-cache'
+    headers['Content-Type'] = 'text/tab-separated-values'
+    headers['Content-Disposition'] = "attachment; filename=\"#{filename}-#{Date.today}.tsv\""
+    headers['X-Accel-Buffering'] = 'no'
 
     response.status = 200
 

@@ -8,7 +8,6 @@ module TsvFormatters
         disease_status
         individual
         timepoint
-        read_length
         notes
         tags
       ]
@@ -22,7 +21,6 @@ module TsvFormatters
         s.disease_status,
         s.individual,
         s.timepoint,
-        s.read_length,
         s.notes,
         s.tags.map(&:tag).join(',')
       ]
