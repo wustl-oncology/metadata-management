@@ -1,6 +1,6 @@
 class GithubUser
   AUTHORIZED_ORG_NAME = 'wustl-oncology'
-  AUTHORIZED_ORG_ID = 124916110
+  AUTHORIZED_ORG_ID = 124_916_110
 
   def initialize(username)
     @username = username
@@ -17,18 +17,19 @@ class GithubUser
   end
 
   private
+
   attr_reader :username, :in_authorized_org
 
   def make_request
     uri = URI("https://api.github.com/users/#{username}/orgs")
     req = Net::HTTP::Get.new(uri)
-    req['Accept'] = "application/vnd.github+json"
-    req['X-GitHub-Api-Version'] = "2022-11-28"
+    req['Accept'] = 'application/vnd.github+json'
+    req['X-GitHub-Api-Version'] = '2022-11-28'
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       resp = http.request(req)
       case resp
-      when Net::HTTPSuccess then
+      when Net::HTTPSuccess
         JSON.parse(resp.body)
       else
         []
