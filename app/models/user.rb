@@ -21,12 +21,12 @@ class User < ApplicationRecord
   end
 
   def self.get_or_create_from_omniauth(auth_hash)
-    email = auth_hash.dig('extra', 'raw_info', 'email'),
+    email = auth_hash.dig('extra', 'raw_info', 'email')
 
-            user = User.where(
-              name: auth_hash.dig('extra', 'raw_info', 'login'),
-              github_uid: auth_hash['uid']
-            ).first_or_create!
+    user = User.where(
+      name: auth_hash.dig('extra', 'raw_info', 'login'),
+      github_uid: auth_hash['uid']
+    ).first_or_create!
 
     if email.present? && email != user.email
       user.email = email
